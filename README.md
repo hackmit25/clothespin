@@ -1,1 +1,3 @@
-# fashion-sustainability
+# clothespin
+
+Clothespin is a sustainability-driven fashion app that helps you get the most out of your closet while cutting down on clothing waste. With just a photo, you can pin your clothes into a digital wardrobe, track how often you wear each piece, and get reminders when items haven’t been worn in a while. The app suggests new outfit combinations, highlights nearby thrift shops and donation pop-ups, and lets you earn points for re-wearing or donating clothes. Those points can be redeemed for discounts or credit at participating thrift stores, creating a fun reward system that keeps fashion circular. By combining style, community, and sustainability, Clothespin transforms your wardrobe into a smarter, more responsible, and more creative space.
