@@ -18,6 +18,7 @@ struct AddItemView: View {
                     VStack(spacing: 16) {
                         Text("Add Photo")
                             .font(.headline)
+                            .foregroundColor(.textPrimary)
                             .frame(maxWidth: .infinity, alignment: .leading)
                         
                         if let selectedImage = selectedImage {
@@ -32,23 +33,23 @@ struct AddItemView: View {
                                 VStack(spacing: 12) {
                                     Image(systemName: "camera.fill")
                                         .font(.system(size: 40))
-                                        .foregroundColor(.blue)
+                                        .foregroundColor(.primary)
                                     
                                     Text("Take Photo")
                                         .font(.headline)
-                                        .foregroundColor(.blue)
+                                        .foregroundColor(.primary)
                                     
                                     Text("or tap to select from gallery")
                                         .font(.caption)
-                                        .foregroundColor(.secondary)
+                                        .foregroundColor(.textSecondary)
                                 }
                                 .frame(maxWidth: .infinity)
                                 .frame(height: 150)
-                                .background(Color(.systemGray6))
+                                .background(Color.background)
                                 .cornerRadius(12)
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 12)
-                                        .stroke(Color.blue, style: StrokeStyle(lineWidth: 2, dash: [5]))
+                                        .stroke(Color.primary, style: StrokeStyle(lineWidth: 2, dash: [5]))
                                 )
                             }
                         }
@@ -58,19 +59,19 @@ struct AddItemView: View {
                                 Button("Retake Photo") {
                                     showingCamera = true
                                 }
-                                .foregroundColor(.blue)
+                                .foregroundColor(.primary)
                                 
                                 Button("Change Photo") {
                                     showingImagePicker = true
                                 }
-                                .foregroundColor(.blue)
+                                .foregroundColor(.primary)
                                 
                                 Spacer()
                                 
                                 Button("Remove") {
                                     selectedImage = nil
                                 }
-                                .foregroundColor(.red)
+                                .foregroundColor(.secondary)
                             }
                         }
                     }
@@ -81,6 +82,7 @@ struct AddItemView: View {
                         VStack(alignment: .leading, spacing: 8) {
                             Text("Item Name")
                                 .font(.headline)
+                                .foregroundColor(.textPrimary)
                             
                             TextField("Enter item name", text: $itemName)
                                 .textFieldStyle(RoundedBorderTextFieldStyle())
@@ -90,6 +92,7 @@ struct AddItemView: View {
                         VStack(alignment: .leading, spacing: 8) {
                             Text("Category")
                                 .font(.headline)
+                                .foregroundColor(.textPrimary)
                             
                             Picker("Category", selection: $selectedCategory) {
                                 ForEach(categories, id: \.self) { category in
@@ -103,6 +106,7 @@ struct AddItemView: View {
                         VStack(alignment: .leading, spacing: 8) {
                             Text("Purchase Date")
                                 .font(.headline)
+                                .foregroundColor(.textPrimary)
                             
                             DatePicker("", selection: $purchaseDate, displayedComponents: .date)
                                 .datePickerStyle(CompactDatePickerStyle())
@@ -114,13 +118,13 @@ struct AddItemView: View {
                     Button(action: addItem) {
                         HStack {
                             Image(systemName: "plus.circle.fill")
-                            Text("Add to Closet")
+                            Text("Add Outfit")
                         }
                         .font(.headline)
                         .foregroundColor(.white)
                         .frame(maxWidth: .infinity)
                         .padding()
-                        .background(selectedImage != nil && !itemName.isEmpty ? Color.blue : Color.gray)
+                        .background(selectedImage != nil && !itemName.isEmpty ? Color.primary : Color.gray)
                         .cornerRadius(12)
                     }
                     .disabled(selectedImage == nil || itemName.isEmpty)
@@ -128,9 +132,9 @@ struct AddItemView: View {
                     Spacer(minLength: 50)
                 }
                 .padding()
-            }
-            .navigationTitle("Add Item")
-            .navigationBarTitleDisplayMode(.large)
+        }
+        .navigationTitle("Add Outfit")
+        .navigationBarTitleDisplayMode(.large)
             .sheet(isPresented: $showingImagePicker) {
                 ImagePicker(selectedImage: $selectedImage, sourceType: .photoLibrary)
             }

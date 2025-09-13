@@ -12,30 +12,30 @@ struct StatsView: View {
                     ], spacing: 16) {
                         StatsStatCard(
                             title: "Total Items",
-                            value: "0",
+                            value: "16",
                             icon: "tshirt.fill",
-                            color: .blue
+                            color: .primary
                         )
                         
                         StatsStatCard(
                             title: "Items Worn",
-                            value: "0",
+                            value: "13",
                             icon: "checkmark.circle.fill",
-                            color: .green
+                            color: .sageGreen
                         )
                         
                         StatsStatCard(
                             title: "Unworn Items",
-                            value: "0",
+                            value: "3",
                             icon: "exclamationmark.triangle.fill",
-                            color: .orange
+                            color: .accent
                         )
                         
                         StatsStatCard(
                             title: "Donation Score",
-                            value: "0%",
+                            value: "85%",
                             icon: "heart.fill",
-                            color: .red
+                            color: .secondary
                         )
                     }
                     .padding(.horizontal)
@@ -45,27 +45,28 @@ struct StatsView: View {
                         Text("Sustainability Insights")
                             .font(.title2)
                             .fontWeight(.bold)
+                            .foregroundColor(.textPrimary)
                             .padding(.horizontal)
                         
                         InsightCard(
                             icon: "leaf.fill",
                             title: "Environmental Impact",
-                            description: "Track your fashion footprint and make more sustainable choices.",
-                            value: "Start adding items to see insights"
+                            description: "Your wardrobe shows good sustainability practices with 85% of items being actively used.",
+                            value: "85% utilization rate"
                         )
                         
                         InsightCard(
                             icon: "clock.fill",
                             title: "Wear Frequency",
-                            description: "Items worn less than 10 times in 6 months are good candidates for donation.",
-                            value: "No data yet"
+                            description: "3 items worn less than 3 times are candidates for donation (Red Heels, Pleated Skirt, Striped Long Sleeve).",
+                            value: "3 low-use items"
                         )
                         
                         InsightCard(
                             icon: "arrow.triangle.2.circlepath",
                             title: "Circular Fashion",
-                            description: "Extend the life of your clothes through donation and sustainable practices.",
-                            value: "0 items donated"
+                            description: "Ready to donate 3 items to extend their life cycle and reduce waste.",
+                            value: "3 items ready"
                         )
                     }
                     
@@ -74,25 +75,26 @@ struct StatsView: View {
                         Text("Weekly Activity")
                             .font(.title2)
                             .fontWeight(.bold)
+                            .foregroundColor(.textPrimary)
                             .padding(.horizontal)
                         
                         VStack(spacing: 12) {
-                            Text("No activity data yet")
+                            Text("4 items worn this week")
                                 .font(.subheadline)
-                                .foregroundColor(.secondary)
+                                .foregroundColor(.textSecondary)
                             
                             Rectangle()
-                                .fill(Color(.systemGray6))
+                                .fill(Color.background)
                                 .frame(height: 200)
                                 .cornerRadius(12)
                                 .overlay(
                                     VStack {
                                         Image(systemName: "chart.bar.fill")
                                             .font(.system(size: 40))
-                                            .foregroundColor(.gray)
+                                            .foregroundColor(.primary)
                                         Text("Chart will appear here")
                                             .font(.caption)
-                                            .foregroundColor(.gray)
+                                            .foregroundColor(.textSecondary)
                                     }
                                 )
                         }
@@ -104,24 +106,25 @@ struct StatsView: View {
                         Text("Recommendations")
                             .font(.title2)
                             .fontWeight(.bold)
+                            .foregroundColor(.textPrimary)
                             .padding(.horizontal)
                         
                         RecommendationCard(
-                            icon: "plus.circle.fill",
-                            title: "Add Items to Your Closet",
-                            description: "Start by adding 5-10 items to get meaningful insights about your wardrobe habits."
-                        )
-                        
-                        RecommendationCard(
-                            icon: "calendar.badge.clock",
-                            title: "Track Your Wearing",
-                            description: "Mark items as worn each time you wear them to build accurate usage data."
-                        )
-                        
-                        RecommendationCard(
                             icon: "heart.fill",
-                            title: "Consider Donating",
-                            description: "Items you haven't worn in 3+ months might be better donated to someone who will use them."
+                            title: "Donate Low-Use Items",
+                            description: "Consider donating your Red Heels (worn 1x), Pleated Skirt (worn 3x), and Striped Long Sleeve (never worn)."
+                        )
+                        
+                        RecommendationCard(
+                            icon: "tshirt.fill",
+                            title: "Your Most Worn Items",
+                            description: "White Sneakers (30 wears) and High-Waisted Jeans (25 wears) are your wardrobe heroes!"
+                        )
+                        
+                        RecommendationCard(
+                            icon: "leaf.fill",
+                            title: "Great Sustainability",
+                            description: "You're doing well with an 85% utilization rate. Keep up the sustainable fashion practices!"
                         )
                     }
                     
@@ -150,14 +153,16 @@ struct StatsStatCard: View {
             Text(value)
                 .font(.title2)
                 .fontWeight(.bold)
+                .foregroundColor(.textPrimary)
             
             Text(title)
                 .font(.caption)
-                .foregroundColor(.secondary)
+                .foregroundColor(.textSecondary)
                 .multilineTextAlignment(.center)
         }
         .padding()
-        .background(Color(.systemGray6))
+        .background(Color.cardBackground)
+        .shadow(color: Color.border, radius: 2, x: 0, y: 1)
         .cornerRadius(12)
     }
 }
@@ -172,25 +177,27 @@ struct InsightCard: View {
         VStack(alignment: .leading, spacing: 12) {
             HStack {
                 Image(systemName: icon)
-                    .foregroundColor(.blue)
+                    .foregroundColor(.primary)
                     .frame(width: 24)
                 
                 Text(title)
                     .font(.headline)
+                    .foregroundColor(.textPrimary)
                 
                 Spacer()
                 
                 Text(value)
                     .font(.caption)
-                    .foregroundColor(.secondary)
+                    .foregroundColor(.textSecondary)
             }
             
             Text(description)
                 .font(.subheadline)
-                .foregroundColor(.secondary)
+                .foregroundColor(.textSecondary)
         }
         .padding()
-        .background(Color(.systemGray6))
+        .background(Color.cardBackground)
+        .shadow(color: Color.border, radius: 2, x: 0, y: 1)
         .cornerRadius(12)
         .padding(.horizontal)
     }
@@ -211,16 +218,18 @@ struct RecommendationCard: View {
                 Text(title)
                     .font(.subheadline)
                     .fontWeight(.medium)
+                    .foregroundColor(.textPrimary)
                 
                 Text(description)
                     .font(.caption)
-                    .foregroundColor(.secondary)
+                    .foregroundColor(.textSecondary)
             }
             
             Spacer()
         }
         .padding()
-        .background(Color(.systemGray6))
+        .background(Color.cardBackground)
+        .shadow(color: Color.border, radius: 2, x: 0, y: 1)
         .cornerRadius(12)
         .padding(.horizontal)
     }

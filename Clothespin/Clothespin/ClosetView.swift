@@ -4,6 +4,17 @@ struct ClosetView: View {
     @State private var selectedCategory = "All"
     let categories = ["All", "Tops", "Bottoms", "Dresses", "Shoes", "Accessories"]
     
+    // Mock data for demonstration
+    private let allItems = ClothingItem.mockItems
+    
+    private var filteredItems: [ClothingItem] {
+        if selectedCategory == "All" {
+            return allItems
+        } else {
+            return allItems.filter { $0.category.rawValue == selectedCategory }
+        }
+    }
+    
     var body: some View {
         NavigationView {
             VStack(spacing: 0) {
@@ -24,20 +35,21 @@ struct ClosetView: View {
                 .padding(.vertical, 12)
                 
                 // Clothing Grid
-                if selectedCategory == "All" && categories.count == 6 { // Empty state
+                if filteredItems.isEmpty {
                     Spacer()
                     VStack(spacing: 16) {
                         Image(systemName: "tshirt")
                             .font(.system(size: 60))
-                            .foregroundColor(.gray)
+                            .foregroundColor(.primary)
                         
-                        Text("Your closet is empty")
+                        Text("No items in this category")
                             .font(.title2)
                             .fontWeight(.medium)
+                            .foregroundColor(.textPrimary)
                         
                         Text("Add items to your closet to start tracking your wardrobe")
                             .font(.subheadline)
-                            .foregroundColor(.secondary)
+                            .foregroundColor(.textSecondary)
                             .multilineTextAlignment(.center)
                             .padding(.horizontal, 40)
                         
@@ -46,7 +58,7 @@ struct ClosetView: View {
                                 .font(.headline)
                                 .foregroundColor(.white)
                                 .padding()
-                                .background(Color.blue)
+                                .background(Color.primary)
                                 .cornerRadius(10)
                         }
                     }
@@ -57,9 +69,8 @@ struct ClosetView: View {
                             GridItem(.flexible()),
                             GridItem(.flexible())
                         ], spacing: 16) {
-                            // Placeholder for future clothing items
-                            ForEach(0..<0, id: \.self) { _ in
-                                ClothingItemCard()
+                            ForEach(filteredItems) { item in
+                                ClothingItemCard(item: item)
                             }
                         }
                         .padding()
@@ -84,43 +95,90 @@ struct CategoryButton: View {
                 .fontWeight(.medium)
                 .padding(.horizontal, 16)
                 .padding(.vertical, 8)
-                .background(isSelected ? Color.blue : Color(.systemGray6))
-                .foregroundColor(isSelected ? .white : .primary)
+                .background(isSelected ? Color.primary : Color.cardBackground)
+                .foregroundColor(isSelected ? .white : .textPrimary)
                 .cornerRadius(20)
         }
     }
 }
 
 struct ClothingItemCard: View {
+    let item: ClothingItem
+    
     var body: some View {
         VStack(spacing: 8) {
-            // Placeholder for clothing image
+            // Clothing image placeholder with category icon
             Rectangle()
-                .fill(Color(.systemGray5))
+                .fill(Color.background)
                 .aspectRatio(1, contentMode: .fit)
                 .cornerRadius(8)
                 .overlay(
-                    Image(systemName: "tshirt")
-                        .font(.title)
-                        .foregroundColor(.gray)
+                    VStack(spacing: 4) {
+                        Image(systemName: item.category.icon)
+                            .font(.title2)
+                            .foregroundColor(.primary)
+                        
+                        Text(item.color)
+                            .font(.caption2)
+                            .foregroundColor(.textSecondary)
+                    }
                 )
             
             VStack(alignment: .leading, spacing: 4) {
-                Text("Item Name")
+                Text(item.name)
                     .font(.subheadline)
                     .fontWeight(.medium)
-                    .lineLimit(1)
+                    .foregroundColor(.textPrimary)
+                    .lineLimit(2)
                 
-                Text("Last worn: Never")
-                    .font(.caption)
-                    .foregroundColor(.secondary)
+                if let brand = item.brand {
+                    Text(brand)
+                        .font(.caption)
+                        .foregroundColor(.textSecondary)
+                        .lineLimit(1)
+                }
+                
+                // Wear status indicator
+                HStack(spacing: 4) {
+                    Circle()
+                        .fill(item.wearStatus.color)
+                        .frame(width: 6, height: 6)
+                    
+                    Text(lastWornText)
+                        .font(.caption)
+                        .foregroundColor(.textSecondary)
+                        .lineLimit(1)
+                }
+                
+                // Wear count
+                Text("Worn \(item.wearCount) times")
+                    .font(.caption2)
+                    .foregroundColor(.textSecondary)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
         }
         .padding(8)
-        .background(Color(.systemBackground))
+        .background(Color.cardBackground)
         .cornerRadius(12)
-        .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 1)
+        .shadow(color: Color.border, radius: 2, x: 0, y: 1)
+    }
+    
+    private var lastWornText: String {
+        if let days = item.daysSinceLastWorn {
+            if days == 0 {
+                return "Worn today"
+            } else if days == 1 {
+                return "Worn yesterday"
+            } else if days < 7 {
+                return "\(days) days ago"
+            } else if days < 30 {
+                return "\(days/7) weeks ago"
+            } else {
+                return "\(days/30) months ago"
+            }
+        } else {
+            return "Never worn"
+        }
     }
 }
 

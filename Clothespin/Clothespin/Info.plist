@@ -58,5 +58,9 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Clothespin needs access to your location to find nearby donation centers and thrift stores.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Clothespin needs access to your location to find nearby donation centers and thrift stores.</string>
 </dict>
 </plist>
