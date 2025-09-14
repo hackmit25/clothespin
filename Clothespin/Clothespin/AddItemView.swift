@@ -142,10 +142,10 @@ struct AddItemView: View {
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 16)
                         .padding(.horizontal, 24)
-                        .background(selectedImage != nil && !brandName.isEmpty ? Color.primary : Color.gray)
+                        .background(selectedImage != nil && !itemName.isEmpty ? Color.primary : Color.gray)
                         .cornerRadius(25) // More rounded like the design
                     }
-                    .disabled(selectedImage == nil || brandName.isEmpty)
+                    .disabled(selectedImage == nil || itemName.isEmpty)
                     
                     Spacer(minLength: 50)
                 }
@@ -206,7 +206,7 @@ struct AddItemView: View {
         guard let image = selectedImage else { return }
         
         // Add item to the manager
-        itemManager.addItem(name: brandName, category: selectedCategory, image: image)
+        itemManager.addItem(name: itemName, category: selectedCategory, image: image)
         
         // Show success alert
         showingSuccessAlert = true

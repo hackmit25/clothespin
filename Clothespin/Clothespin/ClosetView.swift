@@ -12,7 +12,6 @@ struct ClosetView: View {
     
     private var filteredItems: [ClothingItem] {
         return itemManager.getItems(for: selectedCategory)
-
     }
     
     var body: some View {
@@ -149,44 +148,45 @@ struct ClothingItemCard: View {
                             .animation(.easeInOut(duration: 2.0).repeatForever(autoreverses: false), value: isAnimating)
                     )
                     .clipped()
-            
-            VStack(alignment: .leading, spacing: 4) {
-                Text(item.name)
-                    .font(.custom("Poppins-Medium", size: 16))
-                    .fontWeight(.medium)
-                    .foregroundColor(.textPrimary)
-                    .lineLimit(2)
                 
-                if let brand = item.brand {
-                    Text(brand)
-                        .font(.caption)
-                        .foregroundColor(.textSecondary)
-                        .lineLimit(1)
-                }
-                
-                // Wear status indicator
-                HStack(spacing: 4) {
-                    Circle()
-                        .fill(item.wearStatus.color)
-                        .frame(width: 6, height: 6)
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(item.name)
+                        .font(.custom("Poppins-Medium", size: 16))
+                        .fontWeight(.medium)
+                        .foregroundColor(.textPrimary)
+                        .lineLimit(2)
                     
-                    Text(lastWornText)
-                        .font(.custom("Poppins-Regular", size: 12))
+                    if let brand = item.brand {
+                        Text(brand)
+                            .font(.caption)
+                            .foregroundColor(.textSecondary)
+                            .lineLimit(1)
+                    }
+                    
+                    // Wear status indicator
+                    HStack(spacing: 4) {
+                        Circle()
+                            .fill(item.wearStatus.color)
+                            .frame(width: 6, height: 6)
+                        
+                        Text(lastWornText)
+                            .font(.custom("Poppins-Regular", size: 12))
+                            .foregroundColor(.textSecondary)
+                            .lineLimit(1)
+                    }
+                    
+                    // Wear count
+                    Text("Worn \(item.wearCount) times")
+                        .font(.custom("Poppins-Regular", size: 10))
                         .foregroundColor(.textSecondary)
-                        .lineLimit(1)
                 }
-                
-                // Wear count
-                Text("Worn \(item.wearCount) times")
-                    .font(.custom("Poppins-Regular", size: 10))
-                    .foregroundColor(.textSecondary)
+                .frame(maxWidth: .infinity, alignment: .leading)
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(8)
+            .background(Color.cardBackground)
+            .cornerRadius(12)
+            .shadow(color: Color.border, radius: 2, x: 0, y: 1)
         }
-        .padding(8)
-        .background(Color.cardBackground)
-        .cornerRadius(12)
-        .shadow(color: Color.border, radius: 2, x: 0, y: 1)
     }
     
     private var lastWornText: String {
@@ -244,7 +244,7 @@ struct ImageModalView: View {
                             )
                             .frame(maxHeight: 300)
                     }
-                
+                    
                     // Item details
                     VStack(alignment: .leading, spacing: 12) {
                         Text(item.name)
