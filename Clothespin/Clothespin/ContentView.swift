@@ -9,40 +9,50 @@ struct ContentView: View {
             HomeView(selectedTab: $selectedTab)
                 .tabItem {
                     Image(systemName: "house.fill")
-                    Text("Home")
+                    Text("home")
                 }
                 .tag(0)
             
             ClosetView(itemManager: itemManager)
                 .tabItem {
                     Image(systemName: "door.left.hand.open")
-                    Text("Closet")
+                    Text("closet")
                 }
                 .tag(1)
             
             AddItemView(itemManager: itemManager, selectedTab: $selectedTab)
                 .tabItem {
                     Image(systemName: "tshirt.fill")
-                    Text("Record Item")
+                    Text("record item")
                 }
                 .tag(2)
             
             StatsView()
                 .tabItem {
                     Image(systemName: "lightbulb.fill")
-                    Text("Insights")
+                    Text("insights")
                 }
                 .tag(3)
             
             DonateView()
                 .tabItem {
                     Image(systemName: "arrow.3.trianglepath")
-                    Text("Donate")
+                    Text("donate")
                 }
                 .tag(4)
         }
         .accentColor(.primary)
-        .background(Color.background.ignoresSafeArea())
+        .background(Color.white)
+        .onAppear {
+            // Remove tab bar border and set white background
+            let appearance = UITabBarAppearance()
+            appearance.configureWithOpaqueBackground()
+            appearance.backgroundColor = UIColor.white
+            appearance.shadowColor = .clear // Remove border/shadow
+            
+            UITabBar.appearance().standardAppearance = appearance
+            UITabBar.appearance().scrollEdgeAppearance = appearance
+        }
     }
 }
 

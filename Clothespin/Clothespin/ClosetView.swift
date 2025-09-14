@@ -2,13 +2,17 @@ import SwiftUI
 
 struct ClosetView: View {
     @ObservedObject var itemManager: ClothingItemManager
-    @State private var selectedCategory = "All"
+    @State private var selectedCategory = "all"
     @State private var selectedItem: ClothingItem? = nil
     @State private var showingImageModal = false
-    let categories = ["All", "Tops", "Bottoms", "Dresses", "Shoes", "Accessories"]
+    let categories = ["all", "tops", "bottoms", "dresses", "shoes", "accessories"]
+    
+    // Mock data for demonstration
+    private let allItems = ClothingItem.mockItems
     
     private var filteredItems: [ClothingItem] {
         return itemManager.getItems(for: selectedCategory)
+
     }
     
     var body: some View {
@@ -38,20 +42,19 @@ struct ClosetView: View {
                             .font(.system(size: 60))
                             .foregroundColor(.primary)
                         
-                        Text("No items in this category")
-                            .font(.title2)
-                            .fontWeight(.medium)
+                        Text("no items in this category")
+                            .font(.custom("Poppins-SemiBold", size: 22))
                             .foregroundColor(.textPrimary)
                         
-                        Text("Add items to your closet to start tracking your wardrobe")
-                            .font(.subheadline)
+                        Text("add items to your closet to start tracking your wardrobe")
+                            .font(.custom("Poppins-Regular", size: 16))
                             .foregroundColor(.textSecondary)
                             .multilineTextAlignment(.center)
                             .padding(.horizontal, 40)
                         
                         NavigationLink(destination: AddItemView(itemManager: itemManager, selectedTab: .constant(2))) {
-                            Text("Add First Item")
-                                .font(.headline)
+                            Text("add first item")
+                                .font(.custom("Poppins-SemiBold", size: 18))
                                 .foregroundColor(.white)
                                 .padding()
                                 .background(Color.primary)
@@ -76,7 +79,7 @@ struct ClosetView: View {
                     }
                 }
             }
-            .navigationTitle("My Closet")
+            .navigationTitle("closet")
             .navigationBarTitleDisplayMode(.large)
             .sheet(isPresented: $showingImageModal) {
                 if let item = selectedItem {
@@ -95,8 +98,7 @@ struct CategoryButton: View {
     var body: some View {
         Button(action: action) {
             Text(title)
-                .font(.subheadline)
-                .fontWeight(.medium)
+                .font(.custom("Poppins-Medium", size: 16))
                 .padding(.horizontal, 16)
                 .padding(.vertical, 8)
                 .background(isSelected ? Color.primary : Color.cardBackground)
@@ -128,7 +130,7 @@ struct ClothingItemCard: View {
                                 .animation(.easeInOut(duration: 1.5).repeatForever(autoreverses: true), value: isAnimating)
                             
                             Text(item.color)
-                                .font(.caption2)
+                                .font(.custom("Poppins-Regular", size: 10))
                                 .foregroundColor(.textSecondary)
                         }
                     )
@@ -148,48 +150,43 @@ struct ClothingItemCard: View {
                     )
                     .clipped()
             
-                VStack(alignment: .leading, spacing: 4) {
-                    Text(item.name)
-                        .font(.subheadline)
-                        .fontWeight(.medium)
-                        .foregroundColor(.textPrimary)
-                        .lineLimit(2)
-                    
-                    if let brand = item.brand {
-                        Text(brand)
-                            .font(.caption)
-                            .foregroundColor(.textSecondary)
-                            .lineLimit(1)
-                    }
-                    
-                    // Wear status indicator
-                    HStack(spacing: 4) {
-                        Circle()
-                            .fill(item.wearStatus.color)
-                            .frame(width: 6, height: 6)
-                        
-                        Text(lastWornText)
-                            .font(.caption)
-                            .foregroundColor(.textSecondary)
-                            .lineLimit(1)
-                    }
-                    
-                    // Wear count
-                    Text("Worn \(item.wearCount) times")
-                        .font(.caption2)
+            VStack(alignment: .leading, spacing: 4) {
+                Text(item.name)
+                    .font(.custom("Poppins-Medium", size: 16))
+                    .fontWeight(.medium)
+                    .foregroundColor(.textPrimary)
+                    .lineLimit(2)
+                
+                if let brand = item.brand {
+                    Text(brand)
+                        .font(.caption)
                         .foregroundColor(.textSecondary)
+                        .lineLimit(1)
                 }
-                .frame(maxWidth: .infinity, alignment: .leading)
+                
+                // Wear status indicator
+                HStack(spacing: 4) {
+                    Circle()
+                        .fill(item.wearStatus.color)
+                        .frame(width: 6, height: 6)
+                    
+                    Text(lastWornText)
+                        .font(.custom("Poppins-Regular", size: 12))
+                        .foregroundColor(.textSecondary)
+                        .lineLimit(1)
+                }
+                
+                // Wear count
+                Text("Worn \(item.wearCount) times")
+                    .font(.custom("Poppins-Regular", size: 10))
+                    .foregroundColor(.textSecondary)
             }
-            .padding(8)
-            .background(Color.cardBackground)
-            .cornerRadius(12)
-            .shadow(color: Color.border, radius: 2, x: 0, y: 1)
+            .frame(maxWidth: .infinity, alignment: .leading)
         }
-        .buttonStyle(PlainButtonStyle())
-        .onAppear {
-            isAnimating = true
-        }
+        .padding(8)
+        .background(Color.cardBackground)
+        .cornerRadius(12)
+        .shadow(color: Color.border, radius: 2, x: 0, y: 1)
     }
     
     private var lastWornText: String {

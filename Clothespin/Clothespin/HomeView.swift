@@ -17,9 +17,8 @@ struct HomeView: View {
                         HStack(spacing: 12) {
                             Image(systemName: "plus.circle.fill")
                                 .font(.title2)
-                            Text("Submit Your Outfit for Today")
-                                .font(.headline)
-                                .fontWeight(.semibold)
+                            Text("submit your outfit for today")
+                                .font(.custom("Poppins-SemiBold", size: 18))
                         }
                         .foregroundColor(.white)
                         .padding(.horizontal, 24)
@@ -32,31 +31,31 @@ struct HomeView: View {
                     
                     // Gain Extra Points Section
                     VStack(alignment: .leading, spacing: 12) {
-                        Text("Wear It Again")
-                            .font(.headline)
+                        Text("wear it again")
+                            .font(.custom("Poppins-SemiBold", size: 18))
                             .foregroundColor(.textPrimary)
                             .padding(.horizontal)
                         
                                VStack(spacing: 8) {
                                    RarelyWornItemCard(
-                                       name: "Striped Long Sleeve",
-                                       category: "Tops",
+                                       name: "striped long sleeve",
+                                       category: "tops",
                                        wearCount: 0,
                                        icon: "tshirt.fill",
                                        selectedTab: $selectedTab,
                                        pointsManager: pointsManager
                                    )
                                    RarelyWornItemCard(
-                                       name: "Red Heels",
-                                       category: "Shoes",
+                                       name: "red heels",
+                                       category: "shoes",
                                        wearCount: 1,
                                        icon: "shoe.2.fill",
                                        selectedTab: $selectedTab,
                                        pointsManager: pointsManager
                                    )
                                    RarelyWornItemCard(
-                                       name: "Silk Scarf",
-                                       category: "Accessories",
+                                       name: "silk scarf",
+                                       category: "accessories",
                                        wearCount: 2,
                                        icon: "bag.fill",
                                        selectedTab: $selectedTab,
@@ -68,16 +67,16 @@ struct HomeView: View {
                     
                     // Recent Activity
                     VStack(alignment: .leading, spacing: 12) {
-                        Text("Recent Activity")
-                            .font(.headline)
+                        Text("recent activity")
+                            .font(.custom("Poppins-SemiBold", size: 18))
                             .foregroundColor(.textPrimary)
                             .padding(.horizontal)
                         
                         VStack(spacing: 8) {
-                            ActivityRow(icon: "tshirt", text: "White Cotton T-Shirt worn yesterday")
-                            ActivityRow(icon: "figure.walk", text: "High-Waisted Jeans worn yesterday")
+                            ActivityRow(icon: "tshirt", text: "white cotton t-shirt worn yesterday")
+                            ActivityRow(icon: "figure.walk", text: "high-waisted jeans worn yesterday")
                             ActivityRow(icon: "heart.fill", text: "3 items ready for donation")
-                            ActivityRow(icon: "leaf.fill", text: "Great sustainability score: 85%")
+                            ActivityRow(icon: "leaf.fill", text: "great sustainability score: 85%")
                         }
                         .padding(.horizontal)
                     }
@@ -85,11 +84,24 @@ struct HomeView: View {
                     Spacer(minLength: 100) // Space for tab bar
                 }
         }
-        .navigationTitle("Hello, Elaine")
+        .navigationTitle("hello, krystal")
         .navigationBarTitleDisplayMode(.large)
+            .onAppear {
+                let appearance = UINavigationBarAppearance()
+                appearance.configureWithOpaqueBackground()
+                appearance.backgroundColor = UIColor.white
+                appearance.titleTextAttributes = [
+                    .font: UIFont(name: "Poppins-SemiBold", size: 22) ?? UIFont.systemFont(ofSize: 22, weight: .semibold)
+                ]
+                appearance.largeTitleTextAttributes = [
+                    .font: UIFont(name: "Poppins-SemiBold", size: 34) ?? UIFont.systemFont(ofSize: 34, weight: .semibold)
+                ]
+                UINavigationBar.appearance().standardAppearance = appearance
+                UINavigationBar.appearance().scrollEdgeAppearance = appearance
+            }
         .toolbar {
-            ToolbarItem(placement: .principal) {
-                HStack {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                HStack(spacing: 16) {
                     // Points Display
                     Button(action: {
                         showingRewardsModal = true
@@ -100,13 +112,12 @@ struct HomeView: View {
                                 .foregroundColor(.yellow)
                             
                             Text("\(pointsManager.totalPoints)")
-                                .font(.subheadline)
-                                .fontWeight(.semibold)
+                                .font(.custom("Poppins-SemiBold", size: 16))
                                 .foregroundColor(.primary)
                         }
                         .padding(.horizontal, 12)
                         .padding(.vertical, 6)
-                        .background(Color.background)
+                        .background(Color.white)
                         .cornerRadius(16)
                         .overlay(
                             RoundedRectangle(cornerRadius: 16)
@@ -114,7 +125,14 @@ struct HomeView: View {
                         )
                     }
                     
-                    Spacer()
+                    // Notifications Button
+                    Button(action: {
+                        // TODO: Add notifications action
+                    }) {
+                        Image(systemName: "bell")
+                            .font(.title3)
+                            .foregroundColor(.primary)
+                    }
                     
                     // Profile Button
                     Button(action: {
@@ -149,12 +167,12 @@ struct HomeStatCard: View {
                 .foregroundColor(.primary)
             
             Text(value)
-                .font(.title2)
+                .font(.custom("Poppins-Bold", size: 22))
                 .fontWeight(.bold)
                 .foregroundColor(.textPrimary)
             
             Text(title)
-                .font(.caption)
+                .font(.custom("Poppins-Regular", size: 12))
                 .foregroundColor(.textSecondary)
                 .multilineTextAlignment(.center)
         }
@@ -176,7 +194,7 @@ struct ActivityRow: View {
                 .frame(width: 20)
             
             Text(text)
-                .font(.subheadline)
+                .font(.custom("Poppins-Regular", size: 16))
                 .foregroundColor(.textSecondary)
             
             Spacer()
@@ -202,16 +220,15 @@ struct RarelyWornItemCard: View {
             
             VStack(alignment: .leading, spacing: 4) {
                 Text(name)
-                    .font(.subheadline)
-                    .fontWeight(.medium)
+                    .font(.custom("Poppins-Medium", size: 16))
                     .foregroundColor(.textPrimary)
                 
                 Text(category)
-                    .font(.caption)
+                    .font(.custom("Poppins-Regular", size: 12))
                     .foregroundColor(.textSecondary)
                 
-                Text(wearCount == 0 ? "Never worn" : "Worn \(wearCount)x")
-                    .font(.caption2)
+                Text(wearCount == 0 ? "never worn" : "worn \(wearCount)x")
+                    .font(.custom("Poppins-Medium", size: 10))
                     .foregroundColor(.accent)
                     .fontWeight(.medium)
                 
@@ -221,19 +238,19 @@ struct RarelyWornItemCard: View {
                         .font(.caption2)
                         .foregroundColor(.yellow)
                     Text("+10 pts")
-                        .font(.caption2)
+                        .font(.custom("Poppins-Regular", size: 10))
                         .foregroundColor(.textSecondary)
                 }
             }
             
             Spacer()
             
-            Button("Wear Today") {
+            Button("wear today") {
                 // Award points for wearing rare item
                 pointsManager.addWearRareItemPoints(itemName: name)
                 selectedTab = 2 // Navigate to Add Outfit tab
             }
-            .font(.caption)
+            .font(.custom("Poppins-Medium", size: 12))
             .fontWeight(.medium)
             .foregroundColor(.white)
             .padding(.horizontal, 16)
@@ -249,6 +266,8 @@ struct RarelyWornItemCard: View {
 }
 
 struct ProfileModal: View {
+    @Environment(\.dismiss) private var dismiss
+    
     var body: some View {
         NavigationView {
             ScrollView {
@@ -259,13 +278,13 @@ struct ProfileModal: View {
                             .font(.system(size: 80))
                             .foregroundColor(.primary)
                         
-                        Text("Elaine")
-                            .font(.title)
+                        Text("krystal")
+                            .font(.custom("Poppins-Bold", size: 28))
                             .fontWeight(.bold)
                             .foregroundColor(.textPrimary)
                         
-                        Text("Fashion Sustainability Enthusiast")
-                            .font(.subheadline)
+                        Text("fashion sustainability enthusiast")
+                            .font(.custom("Poppins-Regular", size: 16))
                             .foregroundColor(.textSecondary)
                             .multilineTextAlignment(.center)
                     }
@@ -273,8 +292,8 @@ struct ProfileModal: View {
                     
                     // Stats Cards
                     VStack(spacing: 16) {
-                        Text("Your Stats")
-                            .font(.title2)
+                        Text("your stats")
+                            .font(.custom("Poppins-Bold", size: 22))
                             .fontWeight(.bold)
                             .foregroundColor(.textPrimary)
                             .frame(maxWidth: .infinity, alignment: .leading)
@@ -283,18 +302,18 @@ struct ProfileModal: View {
                             GridItem(.flexible()),
                             GridItem(.flexible())
                         ], spacing: 16) {
-                            HomeStatCard(title: "Items in Closet", value: "16", icon: "tshirt.fill")
-                            HomeStatCard(title: "Worn This Week", value: "4", icon: "calendar")
-                            HomeStatCard(title: "Items to Donate", value: "3", icon: "heart.fill")
-                            HomeStatCard(title: "Sustainability Score", value: "85%", icon: "leaf.fill")
+                            HomeStatCard(title: "items in closet", value: "16", icon: "tshirt.fill")
+                            HomeStatCard(title: "worn this week", value: "4", icon: "calendar")
+                            HomeStatCard(title: "items to donate", value: "3", icon: "heart.fill")
+                            HomeStatCard(title: "sustainability score", value: "85%", icon: "leaf.fill")
                         }
                     }
                     .padding(.horizontal)
                     
                     // Insights Section
                     VStack(spacing: 16) {
-                        Text("Insights")
-                            .font(.title2)
+                        Text("insights")
+                            .font(.custom("Poppins-Bold", size: 22))
                             .fontWeight(.bold)
                             .foregroundColor(.textPrimary)
                             .frame(maxWidth: .infinity, alignment: .leading)
@@ -302,22 +321,22 @@ struct ProfileModal: View {
                         VStack(spacing: 12) {
                             AchievementRow(
                                 icon: "leaf.fill",
-                                title: "Eco Warrior",
-                                description: "Maintained 85% sustainability score",
+                                title: "eco warrior",
+                                description: "maintained 85% sustainability score",
                                 isUnlocked: true
                             )
                             
                             AchievementRow(
                                 icon: "heart.fill",
-                                title: "Giving Spirit",
-                                description: "Donated 3 items this month",
+                                title: "giving spirit",
+                                description: "donated 3 items this month",
                                 isUnlocked: true
                             )
                             
                             AchievementRow(
                                 icon: "clock.fill",
-                                title: "Consistent Wardrobe",
-                                description: "Worn 4 items this week",
+                                title: "consistent wardrobe",
+                                description: "worn 4 items this week",
                                 isUnlocked: true
                             )
                         }
@@ -328,12 +347,12 @@ struct ProfileModal: View {
                 }
                 .padding()
             }
-            .navigationTitle("Profile")
+            .navigationTitle("profile")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Done") {
-                        // Modal will be dismissed automatically
+                    Button("done") {
+                        dismiss()
                     }
                 }
             }
@@ -356,12 +375,12 @@ struct AchievementRow: View {
             
             VStack(alignment: .leading, spacing: 4) {
                 Text(title)
-                    .font(.subheadline)
+                    .font(.custom("Poppins-Medium", size: 16))
                     .fontWeight(.medium)
                     .foregroundColor(isUnlocked ? .textPrimary : .gray)
                 
                 Text(description)
-                    .font(.caption)
+                    .font(.custom("Poppins-Regular", size: 12))
                     .foregroundColor(.textSecondary)
                     .lineLimit(2)
             }

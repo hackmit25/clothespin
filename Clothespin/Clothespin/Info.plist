@@ -64,5 +64,12 @@
 	<string>Clothespin needs access to your location to find nearby donation centers and thrift stores.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Clothespin needs access to your camera to take photos of clothing items for your closet.</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Poppins-Regular.ttf</string>
+		<string>Poppins-Medium.ttf</string>
+		<string>Poppins-SemiBold.ttf</string>
+		<string>Poppins-Bold.ttf</string>
+	</array>
 </dict>
 </plist>

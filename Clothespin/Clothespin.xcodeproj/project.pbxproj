@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5B1BBDCD2E766E3400AF6216 /* Poppins-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5B1BBDC92E766E3300AF6216 /* Poppins-Bold.ttf */; };
+		5B1BBDCE2E766E3400AF6216 /* Poppins-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5B1BBDCB2E766E3300AF6216 /* Poppins-Regular.ttf */; };
+		5B1BBDCF2E766E3400AF6216 /* Poppins-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5B1BBDCA2E766E3300AF6216 /* Poppins-Medium.ttf */; };
+		5B1BBDD02E766E3400AF6216 /* Poppins-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5B1BBDCC2E766E3300AF6216 /* Poppins-SemiBold.ttf */; };
+		5B1BBDD22E766ECC00AF6216 /* FontTestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1BBDD12E766ECC00AF6216 /* FontTestView.swift */; };
 		AA0000000000000000000001 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000002 /* App.swift */; };
 		AA0000000000000000000003 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000004 /* ContentView.swift */; };
 		AA0000000000000000000005 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000006 /* Assets.xcassets */; };
@@ -27,6 +32,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5B1BBDC92E766E3300AF6216 /* Poppins-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Bold.ttf"; sourceTree = "<group>"; };
+		5B1BBDCA2E766E3300AF6216 /* Poppins-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Medium.ttf"; sourceTree = "<group>"; };
+		5B1BBDCB2E766E3300AF6216 /* Poppins-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Regular.ttf"; sourceTree = "<group>"; };
+		5B1BBDCC2E766E3300AF6216 /* Poppins-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-SemiBold.ttf"; sourceTree = "<group>"; };
+		5B1BBDD12E766ECC00AF6216 /* FontTestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontTestView.swift; sourceTree = "<group>"; };
 		AA0000000000000000000000 /* Clothespin.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Clothespin.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA0000000000000000000002 /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
 		AA0000000000000000000004 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -95,6 +105,11 @@
 		AA0000000000000000000013 = {
 			isa = PBXGroup;
 			children = (
+				5B1BBDD12E766ECC00AF6216 /* FontTestView.swift */,
+				5B1BBDC92E766E3300AF6216 /* Poppins-Bold.ttf */,
+				5B1BBDCA2E766E3300AF6216 /* Poppins-Medium.ttf */,
+				5B1BBDCB2E766E3300AF6216 /* Poppins-Regular.ttf */,
+				5B1BBDCC2E766E3300AF6216 /* Poppins-SemiBold.ttf */,
 				AA0000000000000000000011 /* Clothespin */,
 				AA0000000000000000000014 /* Products */,
 			);
@@ -166,6 +181,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5B1BBDCD2E766E3400AF6216 /* Poppins-Bold.ttf in Resources */,
+				5B1BBDCE2E766E3400AF6216 /* Poppins-Regular.ttf in Resources */,
+				5B1BBDCF2E766E3400AF6216 /* Poppins-Medium.ttf in Resources */,
+				5B1BBDD02E766E3400AF6216 /* Poppins-SemiBold.ttf in Resources */,
 				AA0000000000000000000007 /* Preview Assets.xcassets in Resources */,
 				AA0000000000000000000005 /* Assets.xcassets in Resources */,
 			);
@@ -181,6 +200,7 @@
 				AA0000000000000000000003 /* ContentView.swift in Sources */,
 				AA0000000000000000000001 /* App.swift in Sources */,
 				AA0000000000000000000025 /* HomeView.swift in Sources */,
+				5B1BBDD22E766ECC00AF6216 /* FontTestView.swift in Sources */,
 				AA0000000000000000000027 /* ClosetView.swift in Sources */,
 				AA0000000000000000000029 /* AddItemView.swift in Sources */,
 				AA0000000000000000000031 /* StatsView.swift in Sources */,
@@ -379,20 +399,20 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		AA0000000000000000000020 /* Build configuration list for PBXProject "Clothespin" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				AA0000000000000000000021 /* Debug */,
-				AA0000000000000000000022 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		AA0000000000000000000016 /* Build configuration list for PBXNativeTarget "Clothespin" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				AA0000000000000000000023 /* Debug */,
 				AA0000000000000000000024 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AA0000000000000000000020 /* Build configuration list for PBXProject "Clothespin" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AA0000000000000000000021 /* Debug */,
+				AA0000000000000000000022 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

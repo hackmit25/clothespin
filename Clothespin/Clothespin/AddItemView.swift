@@ -8,10 +8,10 @@ struct AddItemView: View {
     @State private var showingCamera = false
     @State private var showingSimulatorAlert = false
     @State private var itemName = ""
-    @State private var selectedCategory = "Tops"
+    @State private var selectedCategory = "tops"
     @State private var showingSuccessAlert = false
     
-    let categories = ["Tops", "Bottoms", "Dresses", "Shoes", "Accessories"]
+    let categories = ["tops", "bottoms", "dresses", "shoes", "accessories"]
     
     var body: some View {
         NavigationView {
@@ -19,8 +19,8 @@ struct AddItemView: View {
                 VStack(spacing: 24) {
                     // Image Section
                     VStack(spacing: 16) {
-                        Text("Record Item Photo")
-                            .font(.headline)
+                        Text("record item photo")
+                            .font(.custom("Poppins-SemiBold", size: 18))
                             .foregroundColor(.textPrimary)
                             .frame(maxWidth: .infinity, alignment: .leading)
                         
@@ -46,13 +46,13 @@ struct AddItemView: View {
                                             .font(.system(size: 40))
                                             .foregroundColor(.primary)
                                         
-                                        Text(UIImagePickerController.isSourceTypeAvailable(.camera) ? "Take Photo" : "Take Photo (Simulator)")
-                                            .font(.headline)
+                                        Text(UIImagePickerController.isSourceTypeAvailable(.camera) ? "take photo" : "take photo (simulator)")
+                                            .font(.custom("Poppins-SemiBold", size: 18))
                                             .foregroundColor(.primary)
                                         
                                         if !UIImagePickerController.isSourceTypeAvailable(.camera) {
-                                            Text("Will open photo library in simulator")
-                                                .font(.caption)
+                                            Text("will open photo library in simulator")
+                                                .font(.custom("Poppins-Regular", size: 12))
                                                 .foregroundColor(.textSecondary)
                                         }
                                     }
@@ -71,29 +71,29 @@ struct AddItemView: View {
                                     HStack {
                                         Image(systemName: "photo.on.rectangle")
                                             .foregroundColor(.primary)
-                                        Text("Select from Gallery")
+                                        Text("select from gallery")
                                             .foregroundColor(.primary)
                                     }
-                                    .font(.subheadline)
+                                    .font(.custom("Poppins-Regular", size: 16))
                                 }
                             }
                         }
                         
                         if selectedImage != nil {
                             HStack(spacing: 16) {
-                                Button("Retake Photo") {
+                                Button("retake photo") {
                                     showingCamera = true
                                 }
                                 .foregroundColor(.primary)
                                 
-                                Button("Change Photo") {
+                                Button("change photo") {
                                     showingImagePicker = true
                                 }
                                 .foregroundColor(.primary)
                                 
                                 Spacer()
                                 
-                                Button("Remove") {
+                                Button("remove") {
                                     selectedImage = nil
                                 }
                                 .foregroundColor(.secondary)
@@ -105,21 +105,21 @@ struct AddItemView: View {
                     VStack(spacing: 20) {
                         // Item Name
                         VStack(alignment: .leading, spacing: 8) {
-                            Text("Item Name")
-                                .font(.headline)
+                            Text("item name")
+                                .font(.custom("Poppins-SemiBold", size: 18))
                                 .foregroundColor(.textPrimary)
                             
-                            TextField("Enter item name", text: $itemName)
+                            TextField("enter item name", text: $itemName)
                                 .textFieldStyle(RoundedBorderTextFieldStyle())
                         }
                         
                         // Category Selection
                         VStack(alignment: .leading, spacing: 8) {
-                            Text("Category")
-                                .font(.headline)
+                            Text("category")
+                                .font(.custom("Poppins-SemiBold", size: 18))
                                 .foregroundColor(.textPrimary)
                             
-                            Picker("Category", selection: $selectedCategory) {
+                            Picker("category", selection: $selectedCategory) {
                                 ForEach(categories, id: \.self) { category in
                                     Text(category).tag(category)
                                 }
@@ -133,10 +133,9 @@ struct AddItemView: View {
                     Button(action: addItem) {
                         HStack {
                             Image(systemName: "plus.circle.fill")
-                            Text("Record Item")
+                            Text("record item")
                         }
-                        .font(.headline)
-                        .fontWeight(.semibold)
+                        .font(.custom("Poppins-SemiBold", size: 18))
                         .foregroundColor(.white)
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 16)
@@ -150,29 +149,50 @@ struct AddItemView: View {
                 }
                 .padding()
         }
-        .navigationTitle("Record Item")
+        .navigationTitle("record item")
         .navigationBarTitleDisplayMode(.large)
+        .onAppear {
+            let appearance = UINavigationBarAppearance()
+            appearance.configureWithOpaqueBackground()
+            appearance.backgroundColor = UIColor.white
+            appearance.titleTextAttributes = [
+                .font: UIFont(name: "Poppins-SemiBold", size: 22) ?? UIFont.systemFont(ofSize: 22, weight: .semibold)
+            ]
+            appearance.largeTitleTextAttributes = [
+                .font: UIFont(name: "Poppins-SemiBold", size: 34) ?? UIFont.systemFont(ofSize: 34, weight: .semibold)
+            ]
+            UINavigationBar.appearance().standardAppearance = appearance
+            UINavigationBar.appearance().scrollEdgeAppearance = appearance
+        }
             .sheet(isPresented: $showingImagePicker) {
                 ImagePicker(selectedImage: $selectedImage, sourceType: .photoLibrary)
             }
             .sheet(isPresented: $showingCamera) {
                 ImagePicker(selectedImage: $selectedImage, sourceType: .camera)
             }
-            .alert("Camera Not Available", isPresented: $showingSimulatorAlert) {
-                Button("Use Photo Library") {
+            .alert("camera not available", isPresented: $showingSimulatorAlert) {
+                Button("use photo library") {
                     showingImagePicker = true
                 }
-                Button("Cancel", role: .cancel) { }
+                Button("cancel", role: .cancel) { }
             } message: {
-                Text("Camera is not available in the simulator. Would you like to select a photo from your library instead?")
+                Text("camera is not available in the simulator. would you like to select a photo from your library instead?")
             }
-            .alert("Item Added Successfully!", isPresented: $showingSuccessAlert) {
-                Button("View in Closet") {
+            .alert("item added successfully!", isPresented: $showingSuccessAlert) {
+                Button("view in closet") {
                     selectedTab = 1 // Navigate to Closet tab
                 }
-                Button("Add Another", role: .cancel) { }
+                Button("add another", role: .cancel) { }
             } message: {
-                Text("Your \(selectedCategory.lowercased()) has been added to your closet.")
+                Text("your \(selectedCategory.lowercased()) has been added to your closet.")
+            }
+            .alert("item added successfully!", isPresented: $showingSuccessAlert) {
+                Button("view in closet") {
+                    selectedTab = 1 // Navigate to Closet tab
+                }
+                Button("add another", role: .cancel) { }
+            } message: {
+                Text("your \(selectedCategory.lowercased()) has been added to your closet.")
             }
         }
     }
@@ -189,7 +209,7 @@ struct AddItemView: View {
         // Reset form
         selectedImage = nil
         itemName = ""
-        selectedCategory = "Tops"
+        selectedCategory = "tops"
     }
 }
 
