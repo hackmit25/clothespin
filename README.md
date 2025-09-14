@@ -5,5 +5,5 @@
 Created for HackMIT 2025 by:
 - Krystal Montgomery (mkrystal@mit.edu)
 - Elaine Wang (elainelw@mit.edu)
-- Johanna Johnsen
+- Johanna Johnsen (johannaj@vt.edu)
 - Ethan Nguyen
