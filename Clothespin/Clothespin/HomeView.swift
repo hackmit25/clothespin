@@ -9,79 +9,107 @@ struct HomeView: View {
     var body: some View {
         NavigationView {
             ScrollView {
-                VStack(spacing: 24) {
-                    // Submit Outfit Button - matching design style
-                    Button(action: {
-                        selectedTab = 2 // Navigate to Add Outfit tab
-                    }) {
-                        HStack(spacing: 12) {
-                            Image(systemName: "plus.circle.fill")
-                                .font(.title2)
-                            Text("submit your outfit for today")
-                                .font(.custom("Poppins-SemiBold", size: 18))
-                        }
-                        .foregroundColor(.white)
-                        .padding(.horizontal, 24)
-                        .padding(.vertical, 16)
-                        .background(Color.primary) // Dark olive green
-                        .cornerRadius(25) // More rounded like the design
-                    }
-                    .padding(.horizontal)
-                    .padding(.top, 20)
-                    
-                    // Gain Extra Points Section
-                    VStack(alignment: .leading, spacing: 12) {
-                        Text("wear it again")
-                            .font(.custom("Poppins-SemiBold", size: 18))
-                            .foregroundColor(.textPrimary)
-                            .padding(.horizontal)
+                VStack(spacing: 20) {
+                    // TOP: Outfit of the Day (Primary Action)
+                    VStack(spacing: 16) {
+                        Text("1. catalog your closet")
+                            .font(.custom("Poppins-SemiBold", size: 20))
+                            .foregroundColor(.primary)
+                            .frame(maxWidth: .infinity, alignment: .leading)
                         
-                               VStack(spacing: 8) {
-                                   RarelyWornItemCard(
-                                       name: "striped long sleeve",
-                                       category: "tops",
-                                       wearCount: 0,
-                                       icon: "tshirt.fill",
-                                       selectedTab: $selectedTab,
-                                       pointsManager: pointsManager
-                                   )
-                                   RarelyWornItemCard(
-                                       name: "red heels",
-                                       category: "shoes",
-                                       wearCount: 1,
-                                       icon: "shoe.2.fill",
-                                       selectedTab: $selectedTab,
-                                       pointsManager: pointsManager
-                                   )
-                                   RarelyWornItemCard(
-                                       name: "silk scarf",
-                                       category: "accessories",
-                                       wearCount: 2,
-                                       icon: "bag.fill",
-                                       selectedTab: $selectedTab,
-                                       pointsManager: pointsManager
-                                   )
-                               }
-                        .padding(.horizontal)
-                    }
-                    
-                    // Recent Activity
-                    VStack(alignment: .leading, spacing: 12) {
-                        Text("recent activity")
-                            .font(.custom("Poppins-SemiBold", size: 18))
-                            .foregroundColor(.textPrimary)
-                            .padding(.horizontal)
-                        
-                        VStack(spacing: 8) {
-                            ActivityRow(icon: "tshirt", text: "white cotton t-shirt worn yesterday")
-                            ActivityRow(icon: "figure.walk", text: "high-waisted jeans worn yesterday")
-                            ActivityRow(icon: "heart.fill", text: "3 items ready for donation")
-                            ActivityRow(icon: "leaf.fill", text: "great sustainability score: 85%")
+                        Button(action: {
+                            selectedTab = 2 // Navigate to Add Outfit tab
+                        }) {
+                            HStack(spacing: 12) {
+                                Image(systemName: "plus.circle.fill")
+                                    .font(.title2)
+                                Text("add your outfit of the day!")
+                                    .font(.custom("Poppins-SemiBold", size: 18))
+                            }
+                            .foregroundColor(.white)
+                            .padding(.horizontal, 24)
+                            .padding(.vertical, 16)
+                            .background(Color(red: 0.373, green: 0.424, blue: 0.216)) // #5F6C37
+                            .cornerRadius(50)
                         }
-                        .padding(.horizontal)
                     }
+                    .padding(.horizontal, 20)
+                    .padding(.top, 10)
                     
-                    Spacer(minLength: 100) // Space for tab bar
+                    // MIDDLE: News Feed with Quick Actions
+                    VStack(alignment: .leading, spacing: 16) {
+                        Text("2. track your wardrobe")
+                            .font(.custom("Poppins-SemiBold", size: 20))
+                            .foregroundColor(.primary)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                        
+                        // Tracking highlights with quick actions
+                        VStack(spacing: 12) {
+                            // Good news - leads to insights
+                            TrackingHighlightCard(
+                                type: .good,
+                                title: "great rotation!",
+                                message: "you've worn your black jeans 15 times this month",
+                                actionText: "view insights",
+                                itemImage: "img_001",
+                                action: { selectedTab = 3 } // Navigate to Stats/Insights tab
+                            )
+                            
+                            
+                            // Closet audit - leads to closet sorted by least worn
+                            TrackingHighlightCard(
+                                type: .audit,
+                                title: "closet audit needed",
+                                message: "5 items haven't been worn in 30+ days",
+                                actionText: "review closet",
+                                itemImage: "img_012",
+                                action: { 
+                                    selectedTab = 1 // Navigate to Closet tab
+                                    // TODO: Set sort to "least recent" when we implement that
+                                }
+                            )
+                            
+                            // View insights text link
+                            Button(action: {
+                                selectedTab = 3 // Navigate to Stats/Insights tab
+                            }) {
+                                HStack(spacing: 8) {
+                                    Text("view more stats and analytics")
+                                        .font(.custom("Poppins-Medium", size: 14))
+                                        .foregroundColor(.primary)
+                                    Image(systemName: "chevron.right")
+                                        .font(.caption)
+                                        .foregroundColor(.primary)
+                                }
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .padding(.vertical, 12)
+                                .padding(.horizontal, 16)
+                                .background(Color(.systemGray6))
+                                .cornerRadius(8)
+                            }
+                        }
+                    }
+                    .padding(.horizontal, 20)
+                    
+                    // BOTTOM: Quick Access to Insights
+                    VStack(alignment: .leading, spacing: 16) {
+                        Text("3. rewear or donate")
+                            .font(.custom("Poppins-SemiBold", size: 20))
+                            .foregroundColor(.primary)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                        
+                        // Haven't worn - leads to donate
+                            TrackingHighlightCard(
+                                type: .bad,
+                                title: "time to donate",
+                                message: "your red dress hasn't been worn in 45 days",
+                                actionText: "donate now",
+                                itemImage: "img_005",
+                                action: { selectedTab = 4 } // Navigate to Donate tab
+                            )
+                    }
+                    .padding(.horizontal, 20)
+                    .padding(.bottom, 100) // Space for tab bar
                 }
         }
         .navigationTitle("hello, krystal")
@@ -123,15 +151,6 @@ struct HomeView: View {
                             RoundedRectangle(cornerRadius: 16)
                                 .stroke(Color.border, lineWidth: 1)
                         )
-                    }
-                    
-                    // Notifications Button
-                    Button(action: {
-                        // TODO: Add notifications action
-                    }) {
-                        Image(systemName: "bell")
-                            .font(.title3)
-                            .foregroundColor(.primary)
                     }
                     
                     // Profile Button
@@ -262,6 +281,190 @@ struct RarelyWornItemCard: View {
         .background(Color.cardBackground)
         .cornerRadius(12)
         .shadow(color: Color.border, radius: 2, x: 0, y: 1)
+    }
+}
+
+// MARK: - News Item Card
+
+enum NewsItemType {
+    case good, bad, audit
+}
+
+struct NewsItemCard: View {
+    let type: NewsItemType
+    let title: String
+    let message: String
+    let actionText: String
+    let itemImage: String
+    
+    var body: some View {
+        HStack(spacing: 12) {
+            // Item image
+            Rectangle()
+                .fill(Color(.systemGray6))
+                .frame(width: 60, height: 80)
+                .cornerRadius(8)
+                .overlay(
+                    Group {
+                        if let image = UIImage(named: itemImage) {
+                            Image(uiImage: image)
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                        } else {
+                            Image(systemName: "tshirt")
+                                .font(.system(size: 24))
+                                .foregroundColor(.gray)
+                        }
+                    }
+                )
+                .clipped()
+            
+            // Content
+            VStack(alignment: .leading, spacing: 8) {
+                Text(title)
+                    .font(.custom("Poppins-SemiBold", size: 16))
+                    .foregroundColor(.primary)
+                
+                Text(message)
+                    .font(.custom("Poppins-Regular", size: 14))
+                    .foregroundColor(.secondary)
+                    .multilineTextAlignment(.leading)
+                
+                Spacer()
+                
+                // Action button
+                Button(action: {
+                    // Handle action based on type
+                    if type == .bad {
+                        // Navigate to closet or donation
+                    } else {
+                        // Show encouragement or stats
+                    }
+                }) {
+                    Text(actionText)
+                        .font(.custom("Poppins-Medium", size: 12))
+                        .foregroundColor(type == .good ? .white : .primary)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 6)
+                        .background(type == .good ? Color.green : Color(.systemGray5))
+                        .cornerRadius(16)
+                }
+            }
+            
+            Spacer()
+        }
+        .padding(16)
+        .background(Color(.systemBackground))
+        .cornerRadius(12)
+        .shadow(color: Color(.systemGray4), radius: 2, x: 0, y: 1)
+        .overlay(
+            RoundedRectangle(cornerRadius: 12)
+                .stroke(borderColor, lineWidth: 1)
+        )
+    }
+    
+    private var borderColor: Color {
+        switch type {
+        case .good:
+            return Color.green.opacity(0.3)
+        case .bad:
+            return Color.orange.opacity(0.3)
+        case .audit:
+            return Color.blue.opacity(0.3)
+        }
+    }
+}
+
+// MARK: - Tracking Highlight Card
+
+struct TrackingHighlightCard: View {
+    let type: NewsItemType
+    let title: String
+    let message: String
+    let actionText: String
+    let itemImage: String
+    let action: () -> Void
+    @State private var loadedImage: UIImage?
+    
+    var body: some View {
+        VStack(spacing: 12) {
+            // Image and text content
+            HStack(spacing: 12) {
+                // Square image on left
+                Rectangle()
+                    .fill(Color(.systemGray6))
+                    .frame(width: 80, height: 80)
+                    .cornerRadius(8)
+                    .overlay(
+                        Group {
+                            if let image = loadedImage {
+                                Image(uiImage: image)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                            } else {
+                                Image(systemName: "tshirt")
+                                    .font(.system(size: 24))
+                                    .foregroundColor(.gray)
+                            }
+                        }
+                    )
+                    .clipped()
+                
+                // Text content
+                VStack(alignment: .leading, spacing: 4) {
+                    // Main announcement - matching app style
+                    Text(title)
+                        .font(.custom("Poppins-SemiBold", size: 16))
+                        .foregroundColor(.primary)
+                        .lineLimit(2)
+                        .multilineTextAlignment(.leading)
+                    
+                    // Subtitle
+                    Text(message)
+                        .font(.custom("Poppins-Regular", size: 14))
+                        .foregroundColor(.secondary)
+                        .lineLimit(2)
+                        .multilineTextAlignment(.leading)
+                }
+                
+                Spacer()
+            }
+            
+            // Action button at bottom - full width
+            Button(action: action) {
+                Text(actionText)
+                    .font(.custom("Poppins-SemiBold", size: 16))
+                    .foregroundColor(.white)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 12)
+                    .background(buttonColor)
+                    .cornerRadius(50)
+            }
+        }
+        .padding(16)
+        .background(Color(.systemBackground))
+        .cornerRadius(12)
+        .shadow(color: Color(.systemGray4), radius: 2, x: 0, y: 1)
+        .onAppear {
+            loadImage()
+        }
+    }
+    
+    private func loadImage() {
+        if let image = UIImage(named: itemImage) {
+            loadedImage = image
+        }
+    }
+    
+    private var buttonColor: Color {
+        switch type {
+        case .good:
+            return Color(red: 0.737, green: 0.424, blue: 0.145) // #BC6C25
+        case .bad:
+            return Color(red: 0.737, green: 0.424, blue: 0.145) // #BC6C25
+        case .audit:
+            return Color(red: 0.737, green: 0.424, blue: 0.145) // #BC6C25
+        }
     }
 }
 
