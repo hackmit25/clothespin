@@ -1,4 +1,3 @@
-<<<<<<< Updated upstream
 
 # clothespin
 
@@ -9,4 +8,4 @@ Created for HackMIT 2025 by:
 - Krystal Montgomery (mkrystal@mit.edu)
 - Elaine Wang (elainelw@mit.edu)
 - Johanna Johnsen (johannaj@vt.edu)
-- # Ethan Nguyen
+- Ethan Nguyen (ethan204@mit.edu)
