@@ -4,7 +4,7 @@ extension Color {
     // Your custom color palette
     static let sageGreen = Color(hex: "5F6C37")      // Primary green
     static let darkGreen = Color(hex: "273617")      // Dark accent green
-    static let cream = Color(hex: "FEFADF")          // Light cream background
+    static let cream = Color.white                   // White background
     static let warmBrown = Color(hex: "DCA15D")      // Warm brown accent
     static let rust = Color(hex: "BC6C25")           // Rust accent
     

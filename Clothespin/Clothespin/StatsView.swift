@@ -7,58 +7,56 @@ struct StatsView: View {
                 VStack(spacing: 24) {
                     // Sustainability Insights
                     VStack(alignment: .leading, spacing: 16) {
-                        Text("Sustainability Insights")
-                            .font(.title2)
-                            .fontWeight(.bold)
+                        Text("sustainability insights")
+                            .font(.custom("Poppins-Bold", size: 22))
                             .foregroundColor(.textPrimary)
                             .padding(.horizontal)
                         
                         InsightCard(
                             icon: "leaf.fill",
-                            title: "Environmental Impact",
-                            description: "Your wardrobe shows good sustainability practices with 85% of items being actively used.",
+                            title: "environmental impact",
+                            description: "your wardrobe shows good sustainability practices with 85% of items being actively used.",
                             value: "85% utilization rate"
                         )
                         
                         InsightCard(
                             icon: "clock.fill",
-                            title: "Wear Frequency",
-                            description: "3 items worn less than 3 times are candidates for donation (Red Heels, Pleated Skirt, Striped Long Sleeve).",
+                            title: "wear frequency",
+                            description: "3 items worn less than 3 times are candidates for donation (red heels, pleated skirt, striped long sleeve).",
                             value: "3 low-use items"
                         )
                         
                         InsightCard(
                             icon: "arrow.triangle.2.circlepath",
-                            title: "Circular Fashion",
-                            description: "Ready to donate 3 items to extend their life cycle and reduce waste.",
+                            title: "circular fashion",
+                            description: "ready to donate 3 items to extend their life cycle and reduce waste.",
                             value: "3 items ready"
                         )
                     }
                     
                     // Recommendations
                     VStack(alignment: .leading, spacing: 16) {
-                        Text("Recommendations")
-                            .font(.title2)
-                            .fontWeight(.bold)
+                        Text("recommendations")
+                            .font(.custom("Poppins-Bold", size: 22))
                             .foregroundColor(.textPrimary)
                             .padding(.horizontal)
                         
                         RecommendationCard(
                             icon: "heart.fill",
-                            title: "Donate Low-Use Items",
-                            description: "Consider donating your Red Heels (worn 1x), Pleated Skirt (worn 3x), and Striped Long Sleeve (never worn)."
+                            title: "donate low-use items",
+                            description: "consider donating your red heels (worn 1x), pleated skirt (worn 3x), and striped long sleeve (never worn)."
                         )
                         
                         RecommendationCard(
                             icon: "tshirt.fill",
-                            title: "Your Most Worn Items",
-                            description: "White Sneakers (30 wears) and High-Waisted Jeans (25 wears) are your wardrobe heroes!"
+                            title: "your most worn items",
+                            description: "white sneakers (30 wears) and high-waisted jeans (25 wears) are your wardrobe heroes!"
                         )
                         
                         RecommendationCard(
                             icon: "leaf.fill",
-                            title: "Great Sustainability",
-                            description: "You're doing well with an 85% utilization rate. Keep up the sustainable fashion practices!"
+                            title: "great sustainability",
+                            description: "you're doing well with an 85% utilization rate. keep up the sustainable fashion practices!"
                         )
                     }
                     
@@ -66,8 +64,21 @@ struct StatsView: View {
                 }
                 .padding(.top)
             }
-            .navigationTitle("Insights")
+            .navigationTitle("insights")
             .navigationBarTitleDisplayMode(.large)
+            .onAppear {
+                let appearance = UINavigationBarAppearance()
+                appearance.configureWithOpaqueBackground()
+                appearance.backgroundColor = UIColor.white
+                appearance.titleTextAttributes = [
+                    .font: UIFont(name: "Poppins-SemiBold", size: 22) ?? UIFont.systemFont(ofSize: 22, weight: .semibold)
+                ]
+                appearance.largeTitleTextAttributes = [
+                    .font: UIFont(name: "Poppins-SemiBold", size: 34) ?? UIFont.systemFont(ofSize: 34, weight: .semibold)
+                ]
+                UINavigationBar.appearance().standardAppearance = appearance
+                UINavigationBar.appearance().scrollEdgeAppearance = appearance
+            }
         }
     }
 }
@@ -85,12 +96,11 @@ struct StatsStatCard: View {
                 .foregroundColor(color)
             
             Text(value)
-                .font(.title2)
-                .fontWeight(.bold)
+                .font(.custom("Poppins-Bold", size: 22))
                 .foregroundColor(.textPrimary)
             
             Text(title)
-                .font(.caption)
+                .font(.custom("Poppins-Regular", size: 12))
                 .foregroundColor(.textSecondary)
                 .multilineTextAlignment(.center)
         }
@@ -115,18 +125,18 @@ struct InsightCard: View {
                     .frame(width: 24)
                 
                 Text(title)
-                    .font(.headline)
+                    .font(.custom("Poppins-SemiBold", size: 18))
                     .foregroundColor(.textPrimary)
                 
                 Spacer()
                 
                 Text(value)
-                    .font(.caption)
+                    .font(.custom("Poppins-Regular", size: 12))
                     .foregroundColor(.textSecondary)
             }
             
             Text(description)
-                .font(.subheadline)
+                .font(.custom("Poppins-Regular", size: 16))
                 .foregroundColor(.textSecondary)
         }
         .padding()
@@ -150,12 +160,11 @@ struct RecommendationCard: View {
             
             VStack(alignment: .leading, spacing: 4) {
                 Text(title)
-                    .font(.subheadline)
-                    .fontWeight(.medium)
+                    .font(.custom("Poppins-Medium", size: 16))
                     .foregroundColor(.textPrimary)
                 
                 Text(description)
-                    .font(.caption)
+                    .font(.custom("Poppins-Regular", size: 12))
                     .foregroundColor(.textSecondary)
             }
             

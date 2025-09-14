@@ -6,8 +6,8 @@ struct SplashScreenView: View {
     
     var body: some View {
         ZStack {
-            // Background using the light cream color from the brand guide
-            Color(red: 0.996, green: 0.980, blue: 0.875) // #FEFADF
+            // Background using white
+            Color.white
                 .ignoresSafeArea()
             
             VStack(spacing: 24) {
@@ -15,7 +15,7 @@ struct SplashScreenView: View {
                 
                 // Clothespin Logo - using actual logo image
                 VStack(spacing: 16) {
-                    // Actual logo image from Assets
+                    // Clothespin wordmark from Assets
                     Image("Logo")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
@@ -29,8 +29,8 @@ struct SplashScreenView: View {
                 }
                 
                 // Tagline - shorter version
-                Text("Get the most out of your closet")
-                    .font(.system(size: 16, weight: .medium, design: .default))
+                Text("get the most out of your closet")
+                    .font(.custom("Poppins-Medium", size: 16))
                     .foregroundColor(Color(red: 0.373, green: 0.424, blue: 0.216)) // #5F6C37 Olive Green
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 40)
@@ -49,8 +49,8 @@ struct SplashScreenView: View {
                         .progressViewStyle(CircularProgressViewStyle(tint: Color(red: 0.863, green: 0.631, blue: 0.365))) // #DCA15D Brown
                         .scaleEffect(0.8)
                     
-                    Text("Loading...")
-                        .font(.system(size: 14, weight: .regular, design: .default))
+                    Text("loading...")
+                        .font(.custom("Poppins-Regular", size: 14))
                         .foregroundColor(Color(red: 0.863, green: 0.631, blue: 0.365)) // #DCA15D Brown
                 }
                 .padding(.bottom, 50)

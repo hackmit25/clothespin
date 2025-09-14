@@ -96,8 +96,18 @@ struct RewardsModal: View {
                 }
                 .padding()
             }
-            .navigationTitle("Rewards")
+            .navigationTitle("rewards")
             .navigationBarTitleDisplayMode(.inline)
+            .onAppear {
+                let appearance = UINavigationBarAppearance()
+                appearance.configureWithOpaqueBackground()
+                appearance.backgroundColor = UIColor.white
+                appearance.titleTextAttributes = [
+                    .font: UIFont(name: "Poppins-SemiBold", size: 17) ?? UIFont.systemFont(ofSize: 17, weight: .semibold)
+                ]
+                UINavigationBar.appearance().standardAppearance = appearance
+                UINavigationBar.appearance().scrollEdgeAppearance = appearance
+            }
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Done") {

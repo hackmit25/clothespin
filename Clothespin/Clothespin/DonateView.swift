@@ -26,9 +26,9 @@ struct DonateView: View {
             VStack(spacing: 0) {
                 // Tab Selector
                 Picker("View", selection: $selectedTab) {
-                    Text("Nearby").tag(0)
-                    Text("My Donations").tag(1)
-                    Text("Impact").tag(2)
+                    Text("nearby").tag(0)
+                    Text("my donations").tag(1)
+                    Text("impact").tag(2)
                 }
                 .pickerStyle(SegmentedPickerStyle())
                 .padding()
@@ -50,8 +50,21 @@ struct DonateView: View {
                 }
                 .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
             }
-            .navigationTitle("Donate")
+            .navigationTitle("donate")
             .navigationBarTitleDisplayMode(.large)
+            .onAppear {
+                let appearance = UINavigationBarAppearance()
+                appearance.configureWithOpaqueBackground()
+                appearance.backgroundColor = UIColor.white
+                appearance.titleTextAttributes = [
+                    .font: UIFont(name: "Poppins-SemiBold", size: 22) ?? UIFont.systemFont(ofSize: 22, weight: .semibold)
+                ]
+                appearance.largeTitleTextAttributes = [
+                    .font: UIFont(name: "Poppins-SemiBold", size: 34) ?? UIFont.systemFont(ofSize: 34, weight: .semibold)
+                ]
+                UINavigationBar.appearance().standardAppearance = appearance
+                UINavigationBar.appearance().scrollEdgeAppearance = appearance
+            }
             .toolbar {
                 ToolbarItem(placement: .principal) {
                     HStack {
@@ -114,7 +127,7 @@ struct NearbyLocationsView: View {
                     }) {
                         HStack(spacing: 6) {
                             Image(systemName: "circle.grid.2x2.fill")
-                            Text("All")
+                            Text("all")
                         }
                         .font(.caption)
                         .padding(.horizontal, 12)
@@ -131,7 +144,7 @@ struct NearbyLocationsView: View {
                         }) {
                             HStack(spacing: 6) {
                                 Image(systemName: type.icon)
-                                Text(type.rawValue)
+                                Text(type.rawValue.lowercased())
                             }
                             .font(.caption)
                             .padding(.horizontal, 12)
@@ -149,9 +162,9 @@ struct NearbyLocationsView: View {
             // Location Status
             if locationManager.authorizationStatus == .denied {
                 VStack {
-                    Text("Location access denied")
+                    Text("location access denied")
                         .foregroundColor(.red)
-                    Button("Enable in Settings") {
+                    Button("enable in settings") {
                         if let settingsUrl = URL(string: UIApplication.openSettingsURLString) {
                             UIApplication.shared.open(settingsUrl)
                         }
@@ -179,7 +192,7 @@ struct NearbyLocationsView: View {
                                     .frame(width: 24, height: 24)
                             )
                         Text(location.name)
-                            .font(.caption2)
+                            .font(.custom("Poppins-Regular", size: 10))
                             .padding(4)
                             .background(Color.white)
                             .cornerRadius(4)
@@ -196,7 +209,7 @@ struct NearbyLocationsView: View {
             if isLoading {
                 HStack {
                     ProgressView()
-                    Text("Searching for donation centers...")
+                    Text("searching for donation centers...")
                 }
                 .padding()
             }
@@ -210,12 +223,12 @@ struct NearbyLocationsView: View {
                                 .font(.system(size: 50))
                                 .foregroundColor(.gray)
                             
-                            Text("No donation centers found")
-                                .font(.headline)
+                            Text("no donation centers found")
+                                .font(.custom("Poppins-SemiBold", size: 18))
                                 .foregroundColor(.secondary)
                             
-                            Text("Try searching for a different city or enable location access")
-                                .font(.subheadline)
+                            Text("try searching for a different city or enable location access")
+                                .font(.custom("Poppins-Regular", size: 16))
                                 .foregroundColor(.secondary)
                                 .multilineTextAlignment(.center)
                                 .padding(.horizontal)
@@ -302,27 +315,25 @@ struct MyDonationsView: View {
             VStack(spacing: 24) {
                 // Donation Summary
                 VStack(spacing: 16) {
-                    Text("Your Donation Impact")
-                        .font(.title2)
-                        .fontWeight(.bold)
+                    Text("your donation impact")
+                        .font(.custom("Poppins-Bold", size: 22))
                     
                     LazyVGrid(columns: [
                         GridItem(.flexible()),
                         GridItem(.flexible())
                     ], spacing: 16) {
-                        DonateStatCard(title: "Items Donated", value: "\(totalItemsDonated)", icon: "tshirt.fill")
-                        DonateStatCard(title: "Locations Visited", value: "\(uniqueLocations)", icon: "location.fill")
-                        DonateStatCard(title: "Lives Impacted", value: "\(totalItemsDonated)", icon: "person.2.fill")
-                        DonateStatCard(title: "Carbon Saved", value: "\(totalItemsDonated * 4) lbs", icon: "leaf.fill")
+                        DonateStatCard(title: "items donated", value: "\(totalItemsDonated)", icon: "tshirt.fill")
+                        DonateStatCard(title: "locations visited", value: "\(uniqueLocations)", icon: "location.fill")
+                        DonateStatCard(title: "lives impacted", value: "\(totalItemsDonated)", icon: "person.2.fill")
+                        DonateStatCard(title: "carbon saved", value: "\(totalItemsDonated * 4) lbs", icon: "leaf.fill")
                     }
                     .padding(.horizontal)
                 }
                 
                 // Recent Donations
                 VStack(alignment: .leading, spacing: 16) {
-                    Text("Recent Donations")
-                        .font(.title2)
-                        .fontWeight(.bold)
+                    Text("recent donations")
+                        .font(.custom("Poppins-Bold", size: 22))
                         .padding(.horizontal)
                     
                     VStack(spacing: 16) {
@@ -332,13 +343,12 @@ struct MyDonationsView: View {
                                     .font(.system(size: 50))
                                     .foregroundColor(.primary)
                                 
-                                Text("No donations yet")
-                                    .font(.title3)
-                                    .fontWeight(.medium)
+                                Text("no donations yet")
+                                    .font(.custom("Poppins-SemiBold", size: 20))
                                     .foregroundColor(.textPrimary)
                                 
-                                Text("Start your donation journey by using the QR code feature!")
-                                    .font(.subheadline)
+                                Text("start your donation journey by using the qr code feature!")
+                                    .font(.custom("Poppins-Regular", size: 16))
                                     .foregroundColor(.textSecondary)
                                     .multilineTextAlignment(.center)
                             }
@@ -367,27 +377,26 @@ struct ImpactView: View {
             VStack(spacing: 24) {
                 // Environmental Impact
                 VStack(alignment: .leading, spacing: 16) {
-                    Text("Environmental Impact")
-                        .font(.title2)
-                        .fontWeight(.bold)
+                    Text("environmental impact")
+                        .font(.custom("Poppins-Bold", size: 22))
                     
                     ImpactCard(
                         icon: "leaf.fill",
-                        title: "Carbon Footprint Reduction",
+                        title: "carbon footprint reduction",
                         description: "Each clothing item donated instead of thrown away saves approximately 27kg of CO2 emissions.",
                         value: "0 kg CO2 saved"
                     )
                     
                     ImpactCard(
                         icon: "drop.fill",
-                        title: "Water Conservation",
+                        title: "water conservation",
                         description: "Donating clothes reduces the demand for new clothing production, saving thousands of gallons of water per item.",
                         value: "0 gallons saved"
                     )
                     
                     ImpactCard(
                         icon: "trash.fill",
-                        title: "Waste Reduction",
+                        title: "waste reduction",
                         description: "Keep clothing out of landfills where synthetic materials can take hundreds of years to decompose.",
                         value: "0 items diverted"
                     )
@@ -396,20 +405,19 @@ struct ImpactView: View {
                 
                 // Social Impact
                 VStack(alignment: .leading, spacing: 16) {
-                    Text("Social Impact")
-                        .font(.title2)
-                        .fontWeight(.bold)
+                    Text("social impact")
+                        .font(.custom("Poppins-Bold", size: 22))
                     
                     ImpactCard(
                         icon: "person.2.fill",
-                        title: "Community Support",
+                        title: "community support",
                         description: "Your donations help provide affordable clothing options for families in need.",
                         value: "0 families helped"
                     )
                     
                     ImpactCard(
                         icon: "briefcase.fill",
-                        title: "Job Creation",
+                        title: "job creation",
                         description: "Donation centers and thrift stores create employment opportunities in your community.",
                         value: "0 jobs supported"
                     )
@@ -443,15 +451,14 @@ struct DonationLocationCard: View {
                 VStack(alignment: .leading, spacing: 4) {
                     HStack(spacing: 8) {
                         Text(location.name)
-                            .font(.headline)
-                            .fontWeight(.semibold)
+                            .font(.custom("Poppins-SemiBold", size: 18))
                         
                         // Location type badge
                         HStack(spacing: 4) {
                             Image(systemName: location.type.icon)
                                 .font(.caption2)
-                            Text(location.type.rawValue)
-                                .font(.caption2)
+                            Text(location.type.rawValue.lowercased())
+                                .font(.custom("Poppins-Regular", size: 10))
                         }
                         .padding(.horizontal, 8)
                         .padding(.vertical, 4)
@@ -461,7 +468,7 @@ struct DonationLocationCard: View {
                     }
                     
                     Text(location.address)
-                        .font(.subheadline)
+                        .font(.custom("Poppins-Regular", size: 16))
                         .foregroundColor(.textSecondary)
                 }
                 
@@ -527,12 +534,11 @@ struct DonateStatCard: View {
                 .foregroundColor(.primary)
             
             Text(value)
-                .font(.title2)
-                .fontWeight(.bold)
+                .font(.custom("Poppins-Bold", size: 22))
                 .foregroundColor(.textPrimary)
             
             Text(title)
-                .font(.caption)
+                .font(.custom("Poppins-Regular", size: 12))
                 .foregroundColor(.textSecondary)
                 .multilineTextAlignment(.center)
         }
@@ -634,18 +640,17 @@ struct ImpactCard: View {
                     .frame(width: 24)
                 
                 Text(title)
-                    .font(.headline)
+                    .font(.custom("Poppins-SemiBold", size: 18))
                 
                 Spacer()
                 
                 Text(value)
-                    .font(.caption)
+                    .font(.custom("Poppins-Medium", size: 12))
                     .foregroundColor(.green)
-                    .fontWeight(.medium)
             }
             
             Text(description)
-                .font(.subheadline)
+                .font(.custom("Poppins-Regular", size: 16))
                 .foregroundColor(.secondary)
         }
         .padding()
@@ -884,8 +889,18 @@ struct DonationQRModal: View {
                 Spacer()
             }
             .padding()
-            .navigationTitle("Make Donation")
+            .navigationTitle("make donation")
             .navigationBarTitleDisplayMode(.inline)
+            .onAppear {
+                let appearance = UINavigationBarAppearance()
+                appearance.configureWithOpaqueBackground()
+                appearance.backgroundColor = UIColor.white
+                appearance.titleTextAttributes = [
+                    .font: UIFont(name: "Poppins-SemiBold", size: 17) ?? UIFont.systemFont(ofSize: 17, weight: .semibold)
+                ]
+                UINavigationBar.appearance().standardAppearance = appearance
+                UINavigationBar.appearance().scrollEdgeAppearance = appearance
+            }
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Done") {
