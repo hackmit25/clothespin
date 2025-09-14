@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5B1A28A02E76DBDE00F6A0E4 /* CustomTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1A289F2E76DBDE00F6A0E4 /* CustomTabBar.swift */; };
 		5B1BBDCD2E766E3400AF6216 /* Poppins-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5B1BBDC92E766E3300AF6216 /* Poppins-Bold.ttf */; };
 		5B1BBDCE2E766E3400AF6216 /* Poppins-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5B1BBDCB2E766E3300AF6216 /* Poppins-Regular.ttf */; };
 		5B1BBDCF2E766E3400AF6216 /* Poppins-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5B1BBDCA2E766E3300AF6216 /* Poppins-Medium.ttf */; };
@@ -32,6 +33,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5B1A289F2E76DBDE00F6A0E4 /* CustomTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBar.swift; sourceTree = "<group>"; };
 		5B1BBDC92E766E3300AF6216 /* Poppins-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Bold.ttf"; sourceTree = "<group>"; };
 		5B1BBDCA2E766E3300AF6216 /* Poppins-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Medium.ttf"; sourceTree = "<group>"; };
 		5B1BBDCB2E766E3300AF6216 /* Poppins-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Regular.ttf"; sourceTree = "<group>"; };
@@ -74,6 +76,7 @@
 			children = (
 				AA0000000000000000000002 /* App.swift */,
 				AA0000000000000000000004 /* ContentView.swift */,
+				5B1A289F2E76DBDE00F6A0E4 /* CustomTabBar.swift */,
 				AA0000000000000000000026 /* HomeView.swift */,
 				AA0000000000000000000028 /* ClosetView.swift */,
 				AA0000000000000000000030 /* AddItemView.swift */,
@@ -205,6 +208,7 @@
 				AA0000000000000000000029 /* AddItemView.swift in Sources */,
 				AA0000000000000000000031 /* StatsView.swift in Sources */,
 				AA0000000000000000000033 /* DonateView.swift in Sources */,
+				5B1A28A02E76DBDE00F6A0E4 /* CustomTabBar.swift in Sources */,
 				AA0000000000000000000035 /* LocationManager.swift in Sources */,
 				AA0000000000000000000039 /* ClothingItem.swift in Sources */,
 				AA0000000000000000000041 /* DonationCenterService.swift in Sources */,

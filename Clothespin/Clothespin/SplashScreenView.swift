@@ -35,7 +35,7 @@ struct SplashScreenView: View {
                 .zIndex(1) // Ensure logo is on top layer
                 
                 // Tagline - shorter version
-                Text("get the most out of your closet")
+                Text("pin your style. spin it forward.")
                     .font(.custom("Poppins-Medium", size: 16))
                     .foregroundColor(.white) // Changed to white for better visibility
                     .multilineTextAlignment(.center)

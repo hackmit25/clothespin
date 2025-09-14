@@ -10,7 +10,7 @@ struct HomeView: View {
                 VStack(spacing: 20) {
                     // TOP: Outfit of the Day (Primary Action)
                     VStack(spacing: 16) {
-                        Text("catalog your closet")
+                        Text("catalog my closet")
                             .font(.custom("Poppins-SemiBold", size: 18))
                             .foregroundColor(.darkGreen)
                             .frame(maxWidth: .infinity, alignment: .leading)
@@ -19,9 +19,12 @@ struct HomeView: View {
                             selectedTab = 2 // Navigate to Add Outfit tab
                         }) {
                             HStack(spacing: 12) {
-                                Image(systemName: "plus.circle.fill")
-                                    .font(.title2)
-                                Text("add your outfit of the day!")
+                                Image("PinIcon")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(width: 50, height: 50)
+                                    .rotationEffect(.degrees(45))
+                                Text("pin my outfit of the day!")
                                     .font(.custom("Poppins-SemiBold", size: 16))
                             }
                             .foregroundColor(.white)
@@ -36,7 +39,7 @@ struct HomeView: View {
                     
                     // MIDDLE: News Feed with Quick Actions
                     VStack(alignment: .leading, spacing: 16) {
-                        Text("track your wardrobe")
+                        Text("track my wardrobe")
                             .font(.custom("Poppins-SemiBold", size: 18))
                             .foregroundColor(.darkGreen)
                             .frame(maxWidth: .infinity, alignment: .leading)
@@ -46,7 +49,7 @@ struct HomeView: View {
                             // Good news - leads to insights
                             TrackingHighlightCard(
                                 title: "great rotation!",
-                                message: "you've worn your black jeans 15 times this month",
+                                message: "you've worn your brown cargo pants 8 times this month",
                                 itemImage: "img_001",
                                 iconName: "lightbulb.fill",
                                 action: { selectedTab = 3 } // Navigate to Stats/Insights tab
@@ -57,7 +60,7 @@ struct HomeView: View {
                             TrackingHighlightCard(
                                 title: "closet audit needed",
                                 message: "5 items haven't been worn in 30+ days",
-                                itemImage: "img_012",
+                                itemImage: "img_008",
                                 iconName: "cabinet.fill",
                                 action: { 
                                     selectedTab = 1 // Navigate to Closet tab
@@ -77,11 +80,11 @@ struct HomeView: View {
                                         .font(.caption)
                                         .foregroundColor(.primary)
                                 }
-                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .frame(maxWidth: .infinity)
                                 .padding(.vertical, 12)
                                 .padding(.horizontal, 16)
                                 .background(Color(.systemGray6))
-                                .cornerRadius(8)
+                                .cornerRadius(50)
                             }
                         }
                     }
@@ -97,7 +100,7 @@ struct HomeView: View {
                         // Haven't worn - leads to donate
                             TrackingHighlightCard(
                                 title: "time to donate",
-                                message: "your red dress hasn't been worn in 45 days",
+                                message: "your blue dress hasn't been worn in 45 days",
                                 itemImage: "img_005",
                                 iconName: "arrow.3.trianglepath",
                                 action: { selectedTab = 4 } // Navigate to Donate tab
@@ -107,17 +110,19 @@ struct HomeView: View {
                     .padding(.bottom, 100) // Space for tab bar
                 }
         }
-        .navigationTitle("hello, krystal")
+        .navigationTitle("hello, krystal ✨")
         .navigationBarTitleDisplayMode(.large)
             .onAppear {
                 let appearance = UINavigationBarAppearance()
                 appearance.configureWithOpaqueBackground()
                 appearance.backgroundColor = UIColor.white
                 appearance.titleTextAttributes = [
-                    .font: UIFont(name: "Poppins-SemiBold", size: 22) ?? UIFont.systemFont(ofSize: 22, weight: .semibold)
+                    .font: UIFont(name: "Poppins-SemiBold", size: 22) ?? UIFont.systemFont(ofSize: 22, weight: .semibold),
+                    .foregroundColor: UIColor(Color.darkGreen)
                 ]
                 appearance.largeTitleTextAttributes = [
-                    .font: UIFont(name: "Poppins-SemiBold", size: 34) ?? UIFont.systemFont(ofSize: 34, weight: .semibold)
+                    .font: UIFont(name: "Poppins-SemiBold", size: 34) ?? UIFont.systemFont(ofSize: 34, weight: .semibold),
+                    .foregroundColor: UIColor(Color.darkGreen)
                 ]
                 UINavigationBar.appearance().standardAppearance = appearance
                 UINavigationBar.appearance().scrollEdgeAppearance = appearance
@@ -429,17 +434,19 @@ struct ProfileModal: View {
             ScrollView {
                 VStack(spacing: 24) {
                     // Profile Header
-                    VStack(spacing: 16) {
-                        Image(systemName: "person.fill")
-                            .font(.system(size: 80))
-                            .foregroundColor(.gray)
+                    VStack(spacing: 8) {
+                        Image("ProfilePhoto")
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: 100, height: 100)
+                            .clipShape(Circle())
                         
                         Text("krystal")
                             .font(.custom("Poppins-Bold", size: 28))
                             .fontWeight(.bold)
                             .foregroundColor(.textPrimary)
                         
-                        Text("fashion sustainability enthusiast")
+                        Text("@hackingsustainability25")
                             .font(.custom("Poppins-Regular", size: 16))
                             .foregroundColor(.textSecondary)
                             .multilineTextAlignment(.center)

@@ -101,7 +101,7 @@ struct ClosetView: View {
                             .padding(.horizontal, 40)
                         
                         NavigationLink(destination: AddItemView(itemManager: itemManager, selectedTab: .constant(2))) {
-                            Text("add first item")
+                            Text("pin first item")
                                 .font(.custom("Poppins-SemiBold", size: 18))
                                 .foregroundColor(.white)
                                 .padding()

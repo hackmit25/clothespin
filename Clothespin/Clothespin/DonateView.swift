@@ -76,10 +76,12 @@ struct DonateView: View {
                 appearance.configureWithOpaqueBackground()
                 appearance.backgroundColor = UIColor.white
                 appearance.titleTextAttributes = [
-                    .font: UIFont(name: "Poppins-SemiBold", size: 22) ?? UIFont.systemFont(ofSize: 22, weight: .semibold)
+                    .font: UIFont(name: "Poppins-SemiBold", size: 22) ?? UIFont.systemFont(ofSize: 22, weight: .semibold),
+                    .foregroundColor: UIColor(Color.darkGreen)
                 ]
                 appearance.largeTitleTextAttributes = [
-                    .font: UIFont(name: "Poppins-SemiBold", size: 34) ?? UIFont.systemFont(ofSize: 34, weight: .semibold)
+                    .font: UIFont(name: "Poppins-SemiBold", size: 34) ?? UIFont.systemFont(ofSize: 34, weight: .semibold),
+                    .foregroundColor: UIColor(Color.darkGreen)
                 ]
                 UINavigationBar.appearance().standardAppearance = appearance
                 UINavigationBar.appearance().scrollEdgeAppearance = appearance
@@ -537,21 +539,24 @@ struct DonationLocationCard: View {
                 .font(.caption)
                 .foregroundColor(.textSecondary)
             
-            HStack {
+            VStack(alignment: .leading, spacing: 8) {
                 Text("Accepts:")
                     .font(.caption)
                     .foregroundColor(.textSecondary)
                 
-                ForEach(location.accepts, id: \.self) { item in
-                    Text(item)
-                        .font(.caption)
-                        .padding(.horizontal, 8)
-                        .padding(.vertical, 2)
-                        .background(Color.primary.opacity(0.2))
-                        .cornerRadius(8)
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 8) {
+                        ForEach(location.accepts, id: \.self) { item in
+                            Text(item)
+                                .font(.caption)
+                                .padding(.horizontal, 8)
+                                .padding(.vertical, 4)
+                                .background(Color.primary.opacity(0.2))
+                                .cornerRadius(8)
+                        }
+                    }
+                    .padding(.horizontal, 1) // Small padding to prevent clipping
                 }
-                
-                Spacer()
             }
             
             Button("Get Directions") {
@@ -936,7 +941,7 @@ struct MyDonationsTabView: View {
             VStack(spacing: 20) {
                 // Stats Overview
                 VStack(spacing: 16) {
-                    Text("your impact")
+                    Text("my impact")
                         .font(.custom("Poppins-SemiBold", size: 18))
                         .foregroundColor(.darkGreen)
                         .frame(maxWidth: .infinity, alignment: .leading)
@@ -1187,6 +1192,7 @@ struct RoundedCorner: Shape {
         return Path(path.cgPath)
     }
 }
+
 
 struct DonateView_Previews: PreviewProvider {
     static var previews: some View {

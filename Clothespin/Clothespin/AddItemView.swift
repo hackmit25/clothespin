@@ -189,10 +189,12 @@ struct AddItemView: View {
             appearance.configureWithOpaqueBackground()
             appearance.backgroundColor = UIColor.white
             appearance.titleTextAttributes = [
-                .font: UIFont(name: "Poppins-SemiBold", size: 22) ?? UIFont.systemFont(ofSize: 22, weight: .semibold)
+                .font: UIFont(name: "Poppins-SemiBold", size: 22) ?? UIFont.systemFont(ofSize: 22, weight: .semibold),
+                .foregroundColor: UIColor(Color.darkGreen)
             ]
             appearance.largeTitleTextAttributes = [
-                .font: UIFont(name: "Poppins-SemiBold", size: 34) ?? UIFont.systemFont(ofSize: 34, weight: .semibold)
+                .font: UIFont(name: "Poppins-SemiBold", size: 34) ?? UIFont.systemFont(ofSize: 34, weight: .semibold),
+                .foregroundColor: UIColor(Color.darkGreen)
             ]
             UINavigationBar.appearance().standardAppearance = appearance
             UINavigationBar.appearance().scrollEdgeAppearance = appearance
