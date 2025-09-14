@@ -6,8 +6,8 @@ struct SplashScreenView: View {
     
     var body: some View {
         ZStack {
-            // Background using white
-            Color.white
+            // Background using green
+            Color(red: 0.373, green: 0.424, blue: 0.216) // #5F6C37 Olive Green
                 .ignoresSafeArea()
             
             VStack(spacing: 24) {
@@ -18,6 +18,8 @@ struct SplashScreenView: View {
                     // Clothespin wordmark from Assets
                     Image("Logo")
                         .resizable()
+                        .renderingMode(.template)
+                        .foregroundColor(.white)
                         .aspectRatio(contentMode: .fit)
                         .frame(height: 80)
                         .scaleEffect(isAnimating ? 1.05 : 1.0)
@@ -26,12 +28,16 @@ struct SplashScreenView: View {
                                 .repeatForever(autoreverses: true),
                             value: isAnimating
                         )
+                        .onAppear {
+                            print("Logo image loaded: \(UIImage(named: "Logo") != nil)")
+                        }
                 }
+                .zIndex(1) // Ensure logo is on top layer
                 
                 // Tagline - shorter version
                 Text("get the most out of your closet")
                     .font(.custom("Poppins-Medium", size: 16))
-                    .foregroundColor(Color(red: 0.373, green: 0.424, blue: 0.216)) // #5F6C37 Olive Green
+                    .foregroundColor(.white) // Changed to white for better visibility
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 40)
                     .opacity(isAnimating ? 0.7 : 1.0)
@@ -40,20 +46,22 @@ struct SplashScreenView: View {
                             .repeatForever(autoreverses: true),
                         value: isAnimating
                     )
+                    .zIndex(1) // Ensure text is on top layer
                 
                 Spacer()
                 
                 // Loading indicator
                 VStack(spacing: 12) {
                     ProgressView()
-                        .progressViewStyle(CircularProgressViewStyle(tint: Color(red: 0.863, green: 0.631, blue: 0.365))) // #DCA15D Brown
-                        .scaleEffect(0.8)
+                        .progressViewStyle(CircularProgressViewStyle(tint: .white)) // White for better visibility
+                        .scaleEffect(1.2) // Larger size
                     
                     Text("loading...")
-                        .font(.custom("Poppins-Regular", size: 14))
-                        .foregroundColor(Color(red: 0.863, green: 0.631, blue: 0.365)) // #DCA15D Brown
+                        .font(.custom("Poppins-Regular", size: 16)) // Larger text
+                        .foregroundColor(.white) // White for better visibility
                 }
                 .padding(.bottom, 50)
+                .zIndex(1) // Ensure loading indicator is on top layer
             }
         }
         .onAppear {

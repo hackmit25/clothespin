@@ -1,17 +1,15 @@
 {
   "images" : [
     {
-      "filename" : "wordmark_white.png",
+      "filename" : "img_008.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "wordmark_white.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "wordmark_white.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
