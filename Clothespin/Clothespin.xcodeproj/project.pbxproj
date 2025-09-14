@@ -23,6 +23,7 @@
 		AA0000000000000000000045 /* PointsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000046 /* PointsManager.swift */; };
 		AA0000000000000000000047 /* RewardsModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000048 /* RewardsModal.swift */; };
 		AA0000000000000000000049 /* SplashScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000050 /* SplashScreenView.swift */; };
+		AA0000000000000000000051 /* ClothingItemManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000052 /* ClothingItemManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +45,7 @@
 		AA0000000000000000000046 /* PointsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointsManager.swift; sourceTree = "<group>"; };
 		AA0000000000000000000048 /* RewardsModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsModal.swift; sourceTree = "<group>"; };
 		AA0000000000000000000050 /* SplashScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenView.swift; sourceTree = "<group>"; };
+		AA0000000000000000000052 /* ClothingItemManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClothingItemManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,6 +76,7 @@
 				AA0000000000000000000046 /* PointsManager.swift */,
 				AA0000000000000000000048 /* RewardsModal.swift */,
 				AA0000000000000000000050 /* SplashScreenView.swift */,
+				AA0000000000000000000052 /* ClothingItemManager.swift */,
 				AA0000000000000000000006 /* Assets.xcassets */,
 				AA0000000000000000000009 /* Info.plist */,
 				AA0000000000000000000012 /* Preview Content */,
@@ -189,6 +192,7 @@
 				AA0000000000000000000045 /* PointsManager.swift in Sources */,
 				AA0000000000000000000047 /* RewardsModal.swift in Sources */,
 				AA0000000000000000000049 /* SplashScreenView.swift in Sources */,
+				AA0000000000000000000051 /* ClothingItemManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

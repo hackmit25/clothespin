@@ -1,12 +1,15 @@
 import SwiftUI
 
 struct AddItemView: View {
+    @ObservedObject var itemManager: ClothingItemManager
+    @Binding var selectedTab: Int
     @State private var selectedImage: UIImage?
     @State private var showingImagePicker = false
     @State private var showingCamera = false
     @State private var showingSimulatorAlert = false
     @State private var itemName = ""
     @State private var selectedCategory = "Tops"
+    @State private var showingSuccessAlert = false
     
     let categories = ["Tops", "Bottoms", "Dresses", "Shoes", "Accessories"]
     
@@ -163,12 +166,25 @@ struct AddItemView: View {
             } message: {
                 Text("Camera is not available in the simulator. Would you like to select a photo from your library instead?")
             }
+            .alert("Item Added Successfully!", isPresented: $showingSuccessAlert) {
+                Button("View in Closet") {
+                    selectedTab = 1 // Navigate to Closet tab
+                }
+                Button("Add Another", role: .cancel) { }
+            } message: {
+                Text("Your \(selectedCategory.lowercased()) has been added to your closet.")
+            }
         }
     }
     
     private func addItem() {
-        // TODO: Implement adding item to closet
-        print("Adding item: \(itemName) of category: \(selectedCategory)")
+        guard let image = selectedImage else { return }
+        
+        // Add item to the manager
+        itemManager.addItem(name: itemName, category: selectedCategory, image: image)
+        
+        // Show success alert
+        showingSuccessAlert = true
         
         // Reset form
         selectedImage = nil
@@ -225,6 +241,6 @@ struct ImagePicker: UIViewControllerRepresentable {
 
 struct AddItemView_Previews: PreviewProvider {
     static var previews: some View {
-        AddItemView()
+        AddItemView(itemManager: ClothingItemManager(), selectedTab: .constant(2))
     }
 }

@@ -11,7 +11,8 @@ struct ClothingItem: Identifiable {
     let size: String
     let lastWorn: Date?
     let wearCount: Int
-    let image: String // SF Symbol name
+    let image: String // SF Symbol name for mock data
+    let actualImage: UIImage? // Actual photo for user-uploaded items
     let notes: String?
     
     var daysSinceLastWorn: Int? {
@@ -88,6 +89,7 @@ extension ClothingItem {
             lastWorn: Calendar.current.date(byAdding: .day, value: -2, to: Date()),
             wearCount: 15,
             image: "tshirt.fill",
+            actualImage: nil,
             notes: "Basic staple"
         ),
         ClothingItem(
@@ -99,6 +101,7 @@ extension ClothingItem {
             lastWorn: Calendar.current.date(byAdding: .day, value: -5, to: Date()),
             wearCount: 8,
             image: "tshirt.fill",
+            actualImage: nil,
             notes: "Perfect for layering"
         ),
         ClothingItem(
@@ -110,6 +113,7 @@ extension ClothingItem {
             lastWorn: Calendar.current.date(byAdding: .day, value: -12, to: Date()),
             wearCount: 12,
             image: "tshirt.fill",
+            actualImage: nil,
             notes: "Cozy winter piece"
         ),
         ClothingItem(
@@ -121,6 +125,7 @@ extension ClothingItem {
             lastWorn: nil,
             wearCount: 0,
             image: "tshirt.fill",
+            actualImage: nil,
             notes: "New purchase, haven't worn yet"
         ),
         
@@ -134,6 +139,7 @@ extension ClothingItem {
             lastWorn: Calendar.current.date(byAdding: .day, value: -1, to: Date()),
             wearCount: 25,
             image: "figure.walk",
+            actualImage: nil,
             notes: "Go-to jeans"
         ),
         ClothingItem(
@@ -145,6 +151,7 @@ extension ClothingItem {
             lastWorn: Calendar.current.date(byAdding: .day, value: -3, to: Date()),
             wearCount: 18,
             image: "figure.walk",
+            actualImage: nil,
             notes: "Workout essential"
         ),
         ClothingItem(
@@ -156,6 +163,7 @@ extension ClothingItem {
             lastWorn: Calendar.current.date(byAdding: .day, value: -45, to: Date()),
             wearCount: 3,
             image: "figure.walk",
+            actualImage: nil,
             notes: "Summer piece"
         ),
         
@@ -169,6 +177,7 @@ extension ClothingItem {
             lastWorn: Calendar.current.date(byAdding: .day, value: -7, to: Date()),
             wearCount: 6,
             image: "figure.dress.line.vertical.figure",
+            actualImage: nil,
             notes: "Perfect for events"
         ),
         ClothingItem(
@@ -180,6 +189,7 @@ extension ClothingItem {
             lastWorn: Calendar.current.date(byAdding: .day, value: -20, to: Date()),
             wearCount: 4,
             image: "figure.dress.line.vertical.figure",
+            actualImage: nil,
             notes: "Spring favorite"
         ),
         ClothingItem(
@@ -191,6 +201,7 @@ extension ClothingItem {
             lastWorn: Calendar.current.date(byAdding: .day, value: -60, to: Date()),
             wearCount: 2,
             image: "figure.dress.line.vertical.figure",
+            actualImage: nil,
             notes: "Office appropriate"
         ),
         
@@ -204,6 +215,7 @@ extension ClothingItem {
             lastWorn: Calendar.current.date(byAdding: .day, value: -1, to: Date()),
             wearCount: 30,
             image: "shoe.2.fill",
+            actualImage: nil,
             notes: "Everyday shoes"
         ),
         ClothingItem(
@@ -215,6 +227,7 @@ extension ClothingItem {
             lastWorn: Calendar.current.date(byAdding: .day, value: -8, to: Date()),
             wearCount: 12,
             image: "shoe.2.fill",
+            actualImage: nil,
             notes: "Fall/winter boots"
         ),
         ClothingItem(
@@ -226,6 +239,7 @@ extension ClothingItem {
             lastWorn: Calendar.current.date(byAdding: .day, value: -90, to: Date()),
             wearCount: 1,
             image: "shoe.2.fill",
+            actualImage: nil,
             notes: "Special occasions only"
         ),
         
@@ -239,6 +253,7 @@ extension ClothingItem {
             lastWorn: Calendar.current.date(byAdding: .day, value: -4, to: Date()),
             wearCount: 20,
             image: "bag.fill",
+            actualImage: nil,
             notes: "Daily bag"
         ),
         ClothingItem(
@@ -250,6 +265,7 @@ extension ClothingItem {
             lastWorn: Calendar.current.date(byAdding: .day, value: -15, to: Date()),
             wearCount: 8,
             image: "bag.fill",
+            actualImage: nil,
             notes: "Delicate chain"
         ),
         ClothingItem(
@@ -261,6 +277,7 @@ extension ClothingItem {
             lastWorn: Calendar.current.date(byAdding: .day, value: -120, to: Date()),
             wearCount: 2,
             image: "bag.fill",
+            actualImage: nil,
             notes: "Investment piece"
         )
     ]

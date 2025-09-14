@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct ContentView: View {
+    @StateObject private var itemManager = ClothingItemManager()
     @State private var selectedTab = 0
     
     var body: some View {
@@ -12,14 +13,14 @@ struct ContentView: View {
                 }
                 .tag(0)
             
-            ClosetView()
+            ClosetView(itemManager: itemManager)
                 .tabItem {
                     Image(systemName: "door.left.hand.open")
                     Text("Closet")
                 }
                 .tag(1)
             
-            AddItemView()
+            AddItemView(itemManager: itemManager, selectedTab: $selectedTab)
                 .tabItem {
                     Image(systemName: "tshirt.fill")
                     Text("Record Item")

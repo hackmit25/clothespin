@@ -1,18 +1,14 @@
 import SwiftUI
 
 struct ClosetView: View {
+    @ObservedObject var itemManager: ClothingItemManager
     @State private var selectedCategory = "All"
+    @State private var selectedItem: ClothingItem? = nil
+    @State private var showingImageModal = false
     let categories = ["All", "Tops", "Bottoms", "Dresses", "Shoes", "Accessories"]
     
-    // Mock data for demonstration
-    private let allItems = ClothingItem.mockItems
-    
     private var filteredItems: [ClothingItem] {
-        if selectedCategory == "All" {
-            return allItems
-        } else {
-            return allItems.filter { $0.category.rawValue == selectedCategory }
-        }
+        return itemManager.getItems(for: selectedCategory)
     }
     
     var body: some View {
@@ -53,7 +49,7 @@ struct ClosetView: View {
                             .multilineTextAlignment(.center)
                             .padding(.horizontal, 40)
                         
-                        NavigationLink(destination: AddItemView()) {
+                        NavigationLink(destination: AddItemView(itemManager: itemManager, selectedTab: .constant(2))) {
                             Text("Add First Item")
                                 .font(.headline)
                                 .foregroundColor(.white)
@@ -70,7 +66,10 @@ struct ClosetView: View {
                             GridItem(.flexible())
                         ], spacing: 16) {
                             ForEach(filteredItems) { item in
-                                ClothingItemCard(item: item)
+                                ClothingItemCard(item: item) {
+                                    selectedItem = item
+                                    showingImageModal = true
+                                }
                             }
                         }
                         .padding()
@@ -79,6 +78,11 @@ struct ClosetView: View {
             }
             .navigationTitle("My Closet")
             .navigationBarTitleDisplayMode(.large)
+            .sheet(isPresented: $showingImageModal) {
+                if let item = selectedItem {
+                    ImageModalView(item: item)
+                }
+            }
         }
     }
 }
@@ -104,63 +108,88 @@ struct CategoryButton: View {
 
 struct ClothingItemCard: View {
     let item: ClothingItem
+    let onTap: () -> Void
+    @State private var isAnimating = false
     
     var body: some View {
-        VStack(spacing: 8) {
-            // Clothing image placeholder with category icon
-            Rectangle()
-                .fill(Color.background)
-                .aspectRatio(1, contentMode: .fit)
-                .cornerRadius(8)
-                .overlay(
-                    VStack(spacing: 4) {
-                        Image(systemName: item.category.icon)
-                            .font(.title2)
-                            .foregroundColor(.primary)
-                        
-                        Text(item.color)
-                            .font(.caption2)
-                            .foregroundColor(.textSecondary)
-                    }
-                )
+        Button(action: onTap) {
+            VStack(spacing: 8) {
+                // Animated thumbnail - always show category icon with animation
+                Rectangle()
+                    .fill(Color.background)
+                    .aspectRatio(1, contentMode: .fit)
+                    .cornerRadius(8)
+                    .overlay(
+                        VStack(spacing: 4) {
+                            Image(systemName: item.category.icon)
+                                .font(.title2)
+                                .foregroundColor(.primary)
+                                .scaleEffect(isAnimating ? 1.1 : 1.0)
+                                .animation(.easeInOut(duration: 1.5).repeatForever(autoreverses: true), value: isAnimating)
+                            
+                            Text(item.color)
+                                .font(.caption2)
+                                .foregroundColor(.textSecondary)
+                        }
+                    )
+                    .overlay(
+                        // Subtle shimmer effect
+                        Rectangle()
+                            .fill(
+                                LinearGradient(
+                                    gradient: Gradient(colors: [Color.clear, Color.white.opacity(0.3), Color.clear]),
+                                    startPoint: .leading,
+                                    endPoint: .trailing
+                                )
+                            )
+                            .rotationEffect(.degrees(45))
+                            .offset(x: isAnimating ? 100 : -100)
+                            .animation(.easeInOut(duration: 2.0).repeatForever(autoreverses: false), value: isAnimating)
+                    )
+                    .clipped()
             
-            VStack(alignment: .leading, spacing: 4) {
-                Text(item.name)
-                    .font(.subheadline)
-                    .fontWeight(.medium)
-                    .foregroundColor(.textPrimary)
-                    .lineLimit(2)
-                
-                if let brand = item.brand {
-                    Text(brand)
-                        .font(.caption)
-                        .foregroundColor(.textSecondary)
-                        .lineLimit(1)
-                }
-                
-                // Wear status indicator
-                HStack(spacing: 4) {
-                    Circle()
-                        .fill(item.wearStatus.color)
-                        .frame(width: 6, height: 6)
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(item.name)
+                        .font(.subheadline)
+                        .fontWeight(.medium)
+                        .foregroundColor(.textPrimary)
+                        .lineLimit(2)
                     
-                    Text(lastWornText)
-                        .font(.caption)
+                    if let brand = item.brand {
+                        Text(brand)
+                            .font(.caption)
+                            .foregroundColor(.textSecondary)
+                            .lineLimit(1)
+                    }
+                    
+                    // Wear status indicator
+                    HStack(spacing: 4) {
+                        Circle()
+                            .fill(item.wearStatus.color)
+                            .frame(width: 6, height: 6)
+                        
+                        Text(lastWornText)
+                            .font(.caption)
+                            .foregroundColor(.textSecondary)
+                            .lineLimit(1)
+                    }
+                    
+                    // Wear count
+                    Text("Worn \(item.wearCount) times")
+                        .font(.caption2)
                         .foregroundColor(.textSecondary)
-                        .lineLimit(1)
                 }
-                
-                // Wear count
-                Text("Worn \(item.wearCount) times")
-                    .font(.caption2)
-                    .foregroundColor(.textSecondary)
+                .frame(maxWidth: .infinity, alignment: .leading)
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(8)
+            .background(Color.cardBackground)
+            .cornerRadius(12)
+            .shadow(color: Color.border, radius: 2, x: 0, y: 1)
         }
-        .padding(8)
-        .background(Color.cardBackground)
-        .cornerRadius(12)
-        .shadow(color: Color.border, radius: 2, x: 0, y: 1)
+        .buttonStyle(PlainButtonStyle())
+        .onAppear {
+            isAnimating = true
+        }
     }
     
     private var lastWornText: String {
@@ -182,8 +211,123 @@ struct ClothingItemCard: View {
     }
 }
 
+struct ImageModalView: View {
+    let item: ClothingItem
+    @Environment(\.presentationMode) var presentationMode
+    
+    var body: some View {
+        NavigationView {
+            ScrollView {
+                VStack(spacing: 20) {
+                    // Full-size image display
+                    if let actualImage = item.actualImage {
+                        Image(uiImage: actualImage)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .cornerRadius(12)
+                            .clipped()
+                            .shadow(radius: 10)
+                            .frame(maxHeight: 400)
+                    } else {
+                        // Fallback if no image
+                        Rectangle()
+                            .fill(Color.cream)
+                            .aspectRatio(4/3, contentMode: .fit)
+                            .cornerRadius(12)
+                            .overlay(
+                                VStack(spacing: 16) {
+                                    Image(systemName: item.category.icon)
+                                        .font(.system(size: 60))
+                                        .foregroundColor(.sageGreen)
+                                    
+                                    Text("No Image Available")
+                                        .font(.headline)
+                                        .foregroundColor(.gray)
+                                }
+                            )
+                            .frame(maxHeight: 300)
+                    }
+                
+                    // Item details
+                    VStack(alignment: .leading, spacing: 12) {
+                        Text(item.name)
+                            .font(.title2)
+                            .fontWeight(.bold)
+                            .foregroundColor(.darkGreen)
+                        
+                        if let brand = item.brand {
+                            Text(brand)
+                                .font(.headline)
+                                .foregroundColor(.gray)
+                        }
+                        
+                        HStack {
+                            Text("Category:")
+                                .font(.subheadline)
+                                .foregroundColor(.gray)
+                            Text(item.category.rawValue)
+                                .font(.subheadline)
+                                .fontWeight(.medium)
+                                .foregroundColor(.darkGreen)
+                        }
+                        
+                        HStack {
+                            Text("Color:")
+                                .font(.subheadline)
+                                .foregroundColor(.gray)
+                            Text(item.color)
+                                .font(.subheadline)
+                                .fontWeight(.medium)
+                                .foregroundColor(.darkGreen)
+                        }
+                        
+                        HStack {
+                            Text("Size:")
+                                .font(.subheadline)
+                                .foregroundColor(.gray)
+                            Text(item.size)
+                                .font(.subheadline)
+                                .fontWeight(.medium)
+                                .foregroundColor(.darkGreen)
+                        }
+                        
+                        // Wear status
+                        HStack(spacing: 8) {
+                            Circle()
+                                .fill(item.wearStatus.color)
+                                .frame(width: 12, height: 12)
+                            
+                            Text(item.wearStatus.text)
+                                .font(.subheadline)
+                                .foregroundColor(.gray)
+                        }
+                        
+                        Text("Worn \(item.wearCount) times")
+                            .font(.subheadline)
+                            .foregroundColor(.gray)
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding()
+                    .background(Color.white)
+                    .cornerRadius(12)
+                    .shadow(radius: 2)
+                }
+                .padding()
+            }
+            .background(Color.cream)
+            .navigationTitle("Item Details")
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationBarItems(
+                trailing: Button("Done") {
+                    presentationMode.wrappedValue.dismiss()
+                }
+            )
+        }
+    }
+}
+
 struct ClosetView_Previews: PreviewProvider {
     static var previews: some View {
-        ClosetView()
+        ClosetView(itemManager: ClothingItemManager())
     }
 }
