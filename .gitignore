@@ -183,6 +183,8 @@ temp/
 *.tmp
 *.temp
 
-.env*
-
-setup_instructions.md
+/Backend/.env*
+/Backend/setup.py
+/Backend/setup_instructions.md
+/Backend/config.py
+/requirements.txt
