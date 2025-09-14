@@ -41,7 +41,7 @@ struct DonateView: View {
                         .tag(0)
                     
                     // My Donations Tab
-                    MyDonationsView(donationHistory: donationHistory)
+                    MyDonationsView(donationHistory: donationHistory, selectedTab: $selectedTab)
                         .tag(1)
                     
                     // Impact Tab
@@ -301,6 +301,7 @@ struct NearbyLocationsView: View {
 
 struct MyDonationsView: View {
     let donationHistory: [DonationRecord]
+    @Binding var selectedTab: Int
     
     var totalItemsDonated: Int {
         donationHistory.reduce(0) { $0 + $1.itemCount }
@@ -328,6 +329,26 @@ struct MyDonationsView: View {
                         DonateStatCard(title: "carbon saved", value: "\(totalItemsDonated * 4) lbs", icon: "leaf.fill")
                     }
                     .padding(.horizontal)
+                    
+                    // Make a Donation Button
+                    Button(action: {
+                        // Navigate to nearby locations tab (tab 0)
+                        selectedTab = 0
+                    }) {
+                        HStack(spacing: 12) {
+                            Image(systemName: "heart.fill")
+                                .font(.title2)
+                            Text("make a donation")
+                                .font(.custom("Poppins-SemiBold", size: 18))
+                        }
+                        .foregroundColor(.white)
+                        .padding(.horizontal, 24)
+                        .padding(.vertical, 16)
+                        .background(Color.primary) // Dark olive green
+                        .cornerRadius(25) // More rounded like the design
+                    }
+                    .padding(.horizontal)
+                    .padding(.top, 8)
                 }
                 
                 // Recent Donations
