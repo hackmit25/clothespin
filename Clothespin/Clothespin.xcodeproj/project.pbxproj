@@ -20,6 +20,9 @@
 		AA0000000000000000000039 /* ClothingItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000040 /* ClothingItem.swift */; };
 		AA0000000000000000000041 /* DonationCenterService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000042 /* DonationCenterService.swift */; };
 		AA0000000000000000000043 /* ColorPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000044 /* ColorPalette.swift */; };
+		AA0000000000000000000045 /* PointsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000046 /* PointsManager.swift */; };
+		AA0000000000000000000047 /* RewardsModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000048 /* RewardsModal.swift */; };
+		AA0000000000000000000049 /* SplashScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000050 /* SplashScreenView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +41,9 @@
 		AA0000000000000000000040 /* ClothingItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClothingItem.swift; sourceTree = "<group>"; };
 		AA0000000000000000000042 /* DonationCenterService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DonationCenterService.swift; sourceTree = "<group>"; };
 		AA0000000000000000000044 /* ColorPalette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPalette.swift; sourceTree = "<group>"; };
+		AA0000000000000000000046 /* PointsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointsManager.swift; sourceTree = "<group>"; };
+		AA0000000000000000000048 /* RewardsModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsModal.swift; sourceTree = "<group>"; };
+		AA0000000000000000000050 /* SplashScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,6 +71,9 @@
 				AA0000000000000000000040 /* ClothingItem.swift */,
 				AA0000000000000000000042 /* DonationCenterService.swift */,
 				AA0000000000000000000044 /* ColorPalette.swift */,
+				AA0000000000000000000046 /* PointsManager.swift */,
+				AA0000000000000000000048 /* RewardsModal.swift */,
+				AA0000000000000000000050 /* SplashScreenView.swift */,
 				AA0000000000000000000006 /* Assets.xcassets */,
 				AA0000000000000000000009 /* Info.plist */,
 				AA0000000000000000000012 /* Preview Content */,
@@ -177,6 +186,9 @@
 				AA0000000000000000000039 /* ClothingItem.swift in Sources */,
 				AA0000000000000000000041 /* DonationCenterService.swift in Sources */,
 				AA0000000000000000000043 /* ColorPalette.swift in Sources */,
+				AA0000000000000000000045 /* PointsManager.swift in Sources */,
+				AA0000000000000000000047 /* RewardsModal.swift in Sources */,
+				AA0000000000000000000049 /* SplashScreenView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

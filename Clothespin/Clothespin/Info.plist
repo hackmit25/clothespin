@@ -62,5 +62,7 @@
 	<string>Clothespin needs access to your location to find nearby donation centers and thrift stores.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>Clothespin needs access to your location to find nearby donation centers and thrift stores.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Clothespin needs access to your camera to take photos of clothing items for your closet.</string>
 </dict>
 </plist>

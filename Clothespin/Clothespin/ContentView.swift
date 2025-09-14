@@ -8,7 +8,7 @@ struct ContentView: View {
             HomeView(selectedTab: $selectedTab)
                 .tabItem {
                     Image(systemName: "house.fill")
-                    Text("Hi, Elaine")
+                    Text("Home")
                 }
                 .tag(0)
             
@@ -22,14 +22,14 @@ struct ContentView: View {
             AddItemView()
                 .tabItem {
                     Image(systemName: "tshirt.fill")
-                    Text("Add Outfit")
+                    Text("Record Item")
                 }
                 .tag(2)
             
             StatsView()
                 .tabItem {
-                    Image(systemName: "chart.bar.fill")
-                    Text("Stats")
+                    Image(systemName: "lightbulb.fill")
+                    Text("Insights")
                 }
                 .tag(3)
             

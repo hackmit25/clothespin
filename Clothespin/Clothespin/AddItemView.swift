@@ -4,9 +4,9 @@ struct AddItemView: View {
     @State private var selectedImage: UIImage?
     @State private var showingImagePicker = false
     @State private var showingCamera = false
+    @State private var showingSimulatorAlert = false
     @State private var itemName = ""
     @State private var selectedCategory = "Tops"
-    @State private var purchaseDate = Date()
     
     let categories = ["Tops", "Bottoms", "Dresses", "Shoes", "Accessories"]
     
@@ -16,7 +16,7 @@ struct AddItemView: View {
                 VStack(spacing: 24) {
                     // Image Section
                     VStack(spacing: 16) {
-                        Text("Add Photo")
+                        Text("Record Item Photo")
                             .font(.headline)
                             .foregroundColor(.textPrimary)
                             .frame(maxWidth: .infinity, alignment: .leading)
@@ -29,28 +29,50 @@ struct AddItemView: View {
                                 .cornerRadius(12)
                                 .clipped()
                         } else {
-                            Button(action: { showingImagePicker = true }) {
-                                VStack(spacing: 12) {
-                                    Image(systemName: "camera.fill")
-                                        .font(.system(size: 40))
-                                        .foregroundColor(.primary)
-                                    
-                                    Text("Take Photo")
-                                        .font(.headline)
-                                        .foregroundColor(.primary)
-                                    
-                                    Text("or tap to select from gallery")
-                                        .font(.caption)
-                                        .foregroundColor(.textSecondary)
+                            VStack(spacing: 16) {
+                                // Take Photo Button
+                                Button(action: { 
+                                    if UIImagePickerController.isSourceTypeAvailable(.camera) {
+                                        showingCamera = true
+                                    } else {
+                                        showingSimulatorAlert = true
+                                    }
+                                }) {
+                                    VStack(spacing: 12) {
+                                        Image(systemName: UIImagePickerController.isSourceTypeAvailable(.camera) ? "camera.fill" : "camera.fill")
+                                            .font(.system(size: 40))
+                                            .foregroundColor(.primary)
+                                        
+                                        Text(UIImagePickerController.isSourceTypeAvailable(.camera) ? "Take Photo" : "Take Photo (Simulator)")
+                                            .font(.headline)
+                                            .foregroundColor(.primary)
+                                        
+                                        if !UIImagePickerController.isSourceTypeAvailable(.camera) {
+                                            Text("Will open photo library in simulator")
+                                                .font(.caption)
+                                                .foregroundColor(.textSecondary)
+                                        }
+                                    }
+                                    .frame(maxWidth: .infinity)
+                                    .frame(height: UIImagePickerController.isSourceTypeAvailable(.camera) ? 100 : 120)
+                                    .background(Color.background)
+                                    .cornerRadius(12)
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 12)
+                                            .stroke(Color.primary, style: StrokeStyle(lineWidth: 2, dash: [5]))
+                                    )
                                 }
-                                .frame(maxWidth: .infinity)
-                                .frame(height: 150)
-                                .background(Color.background)
-                                .cornerRadius(12)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 12)
-                                        .stroke(Color.primary, style: StrokeStyle(lineWidth: 2, dash: [5]))
-                                )
+                                
+                                // Select from Gallery Button
+                                Button(action: { showingImagePicker = true }) {
+                                    HStack {
+                                        Image(systemName: "photo.on.rectangle")
+                                            .foregroundColor(.primary)
+                                        Text("Select from Gallery")
+                                            .foregroundColor(.primary)
+                                    }
+                                    .font(.subheadline)
+                                }
                             }
                         }
                         
@@ -102,30 +124,22 @@ struct AddItemView: View {
                             .pickerStyle(SegmentedPickerStyle())
                         }
                         
-                        // Purchase Date
-                        VStack(alignment: .leading, spacing: 8) {
-                            Text("Purchase Date")
-                                .font(.headline)
-                                .foregroundColor(.textPrimary)
-                            
-                            DatePicker("", selection: $purchaseDate, displayedComponents: .date)
-                                .datePickerStyle(CompactDatePickerStyle())
-                                .labelsHidden()
-                        }
                     }
                     
-                    // Add Button
+                    // Add Button - matching design style
                     Button(action: addItem) {
                         HStack {
                             Image(systemName: "plus.circle.fill")
-                            Text("Add Outfit")
+                            Text("Record Item")
                         }
                         .font(.headline)
+                        .fontWeight(.semibold)
                         .foregroundColor(.white)
                         .frame(maxWidth: .infinity)
-                        .padding()
+                        .padding(.vertical, 16)
+                        .padding(.horizontal, 24)
                         .background(selectedImage != nil && !itemName.isEmpty ? Color.primary : Color.gray)
-                        .cornerRadius(12)
+                        .cornerRadius(25) // More rounded like the design
                     }
                     .disabled(selectedImage == nil || itemName.isEmpty)
                     
@@ -133,13 +147,21 @@ struct AddItemView: View {
                 }
                 .padding()
         }
-        .navigationTitle("Add Outfit")
+        .navigationTitle("Record Item")
         .navigationBarTitleDisplayMode(.large)
             .sheet(isPresented: $showingImagePicker) {
                 ImagePicker(selectedImage: $selectedImage, sourceType: .photoLibrary)
             }
             .sheet(isPresented: $showingCamera) {
                 ImagePicker(selectedImage: $selectedImage, sourceType: .camera)
+            }
+            .alert("Camera Not Available", isPresented: $showingSimulatorAlert) {
+                Button("Use Photo Library") {
+                    showingImagePicker = true
+                }
+                Button("Cancel", role: .cancel) { }
+            } message: {
+                Text("Camera is not available in the simulator. Would you like to select a photo from your library instead?")
             }
         }
     }
@@ -152,7 +174,6 @@ struct AddItemView: View {
         selectedImage = nil
         itemName = ""
         selectedCategory = "Tops"
-        purchaseDate = Date()
     }
 }
 
@@ -163,7 +184,15 @@ struct ImagePicker: UIViewControllerRepresentable {
     
     func makeUIViewController(context: Context) -> UIImagePickerController {
         let picker = UIImagePickerController()
-        picker.sourceType = sourceType
+        
+        // Check if the source type is available
+        if UIImagePickerController.isSourceTypeAvailable(sourceType) {
+            picker.sourceType = sourceType
+        } else {
+            // Fallback to photo library if camera is not available (e.g., in simulator)
+            picker.sourceType = .photoLibrary
+        }
+        
         picker.delegate = context.coordinator
         return picker
     }

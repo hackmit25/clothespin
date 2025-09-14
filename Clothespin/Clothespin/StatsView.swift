@@ -5,41 +5,6 @@ struct StatsView: View {
         NavigationView {
             ScrollView {
                 VStack(spacing: 24) {
-                    // Overview Cards
-                    LazyVGrid(columns: [
-                        GridItem(.flexible()),
-                        GridItem(.flexible())
-                    ], spacing: 16) {
-                        StatsStatCard(
-                            title: "Total Items",
-                            value: "16",
-                            icon: "tshirt.fill",
-                            color: .primary
-                        )
-                        
-                        StatsStatCard(
-                            title: "Items Worn",
-                            value: "13",
-                            icon: "checkmark.circle.fill",
-                            color: .sageGreen
-                        )
-                        
-                        StatsStatCard(
-                            title: "Unworn Items",
-                            value: "3",
-                            icon: "exclamationmark.triangle.fill",
-                            color: .accent
-                        )
-                        
-                        StatsStatCard(
-                            title: "Donation Score",
-                            value: "85%",
-                            icon: "heart.fill",
-                            color: .secondary
-                        )
-                    }
-                    .padding(.horizontal)
-                    
                     // Sustainability Insights
                     VStack(alignment: .leading, spacing: 16) {
                         Text("Sustainability Insights")
@@ -68,37 +33,6 @@ struct StatsView: View {
                             description: "Ready to donate 3 items to extend their life cycle and reduce waste.",
                             value: "3 items ready"
                         )
-                    }
-                    
-                    // Weekly Activity Chart (Placeholder)
-                    VStack(alignment: .leading, spacing: 16) {
-                        Text("Weekly Activity")
-                            .font(.title2)
-                            .fontWeight(.bold)
-                            .foregroundColor(.textPrimary)
-                            .padding(.horizontal)
-                        
-                        VStack(spacing: 12) {
-                            Text("4 items worn this week")
-                                .font(.subheadline)
-                                .foregroundColor(.textSecondary)
-                            
-                            Rectangle()
-                                .fill(Color.background)
-                                .frame(height: 200)
-                                .cornerRadius(12)
-                                .overlay(
-                                    VStack {
-                                        Image(systemName: "chart.bar.fill")
-                                            .font(.system(size: 40))
-                                            .foregroundColor(.primary)
-                                        Text("Chart will appear here")
-                                            .font(.caption)
-                                            .foregroundColor(.textSecondary)
-                                    }
-                                )
-                        }
-                        .padding(.horizontal)
                     }
                     
                     // Recommendations
@@ -132,7 +66,7 @@ struct StatsView: View {
                 }
                 .padding(.top)
             }
-            .navigationTitle("Stats & Insights")
+            .navigationTitle("Insights")
             .navigationBarTitleDisplayMode(.large)
         }
     }

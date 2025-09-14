@@ -12,6 +12,7 @@ struct DonationRecord: Identifiable {
 
 struct DonateView: View {
     @StateObject private var locationManager = LocationManager()
+    @StateObject private var pointsManager = PointsManager()
     @State private var selectedTab = 0
     @State private var isLoading = false
     @State private var searchText = ""
@@ -52,12 +53,16 @@ struct DonateView: View {
             .navigationTitle("Donate")
             .navigationBarTitleDisplayMode(.large)
             .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: {
-                        showingQRModal = true
-                    }) {
-                        Image(systemName: "qrcode")
-                            .foregroundColor(.primary)
+                ToolbarItem(placement: .principal) {
+                    HStack {
+                        Spacer()
+                        Button(action: {
+                            showingQRModal = true
+                        }) {
+                            Image(systemName: "qrcode")
+                                .font(.title3)
+                                .foregroundColor(.primary)
+                        }
                     }
                 }
             }
@@ -66,7 +71,8 @@ struct DonateView: View {
                     donationCount: $donationCount,
                     selectedLocation: $selectedLocation,
                     isPresented: $showingQRModal,
-                    donationHistory: $donationHistory
+                    donationHistory: $donationHistory,
+                    pointsManager: pointsManager
                 )
             }
         }
@@ -573,11 +579,12 @@ struct DonationItemCard: View {
                 // TODO: Handle donation action
             }
             .font(.caption)
+            .fontWeight(.medium)
             .foregroundColor(.white)
-            .padding(.horizontal, 12)
-            .padding(.vertical, 6)
-            .background(Color.primary)
-            .cornerRadius(8)
+            .padding(.horizontal, 16)
+            .padding(.vertical, 8)
+            .background(Color.primary) // Dark olive green
+            .cornerRadius(20) // More rounded like the design
         }
         .padding()
         .background(Color.cardBackground)
@@ -698,6 +705,7 @@ struct DonationQRModal: View {
     @Binding var selectedLocation: String
     @Binding var isPresented: Bool
     @Binding var donationHistory: [DonationRecord]
+    @ObservedObject var pointsManager: PointsManager
     @State private var showingSuccessAlert = false
     
     let locations = [
@@ -843,6 +851,10 @@ struct DonationQRModal: View {
                             qrCodeData: qrCodeData
                         )
                         donationHistory.append(newDonation)
+                        
+                        // Award points for donation
+                        pointsManager.addDonationPoints(itemCount: donationCount, location: selectedLocation)
+                        
                         showingSuccessAlert = true
                     }) {
                         HStack {
@@ -850,11 +862,13 @@ struct DonationQRModal: View {
                             Text("Complete Donation")
                         }
                         .font(.headline)
+                        .fontWeight(.semibold)
                         .foregroundColor(.white)
                         .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(Color.primary)
-                        .cornerRadius(12)
+                        .padding(.vertical, 16)
+                        .padding(.horizontal, 24)
+                        .background(Color.primary) // Dark olive green
+                        .cornerRadius(25) // More rounded like the design
                     }
                     
                     Button(action: {
