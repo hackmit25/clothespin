@@ -9,3 +9,6 @@ Created for HackMIT 2025 by:
 - Elaine Wang (elainelw@mit.edu)
 - Johanna Johnsen (johannaj@vt.edu)
 - Ethan Nguyen (ethan204@mit.edu)
+
+App Demo: [https://youtu.be/glGl5sb8sMw?si=4wvi37Ob0e5mB9RF](https://youtu.be/glGl5sb8sMw?si=4wvi37Ob0e5mB9RF)
+Promo Video: [https://youtu.be/glGl5sb8sMw?si=4wvi37Ob0e5mB9RF](https://www.youtube.com/watch?v=60EXv8GitFc)
