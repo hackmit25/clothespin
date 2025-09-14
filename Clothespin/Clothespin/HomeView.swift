@@ -24,11 +24,11 @@ struct HomeView: View {
                                 Image(systemName: "plus.circle.fill")
                                     .font(.title2)
                                 Text("add your outfit of the day!")
-                                    .font(.custom("Poppins-SemiBold", size: 18))
+                                    .font(.custom("Poppins-SemiBold", size: 16))
                             }
                             .foregroundColor(.white)
-                            .padding(.horizontal, 24)
-                            .padding(.vertical, 16)
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 12)
                             .background(Color(red: 0.373, green: 0.424, blue: 0.216)) // #5F6C37
                             .cornerRadius(50)
                         }

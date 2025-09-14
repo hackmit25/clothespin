@@ -32,7 +32,7 @@ struct DonateView: View {
                 }
                 .pickerStyle(SegmentedPickerStyle())
                 .padding()
-                .background(Color.background)
+                .background(Color.white)
                 
                 // Content based on selected tab
                 TabView(selection: $selectedTab) {

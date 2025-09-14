@@ -19,93 +19,119 @@ struct AddItemView: View {
                 VStack(spacing: 24) {
                     // Image Section
                     VStack(spacing: 16) {
-                        Text("record item photo")
+                        Text("photo")
                             .font(.custom("Poppins-SemiBold", size: 18))
                             .foregroundColor(.textPrimary)
                             .frame(maxWidth: .infinity, alignment: .leading)
                         
                         if let selectedImage = selectedImage {
-                            Image(uiImage: selectedImage)
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(maxHeight: 200)
-                                .cornerRadius(12)
-                                .clipped()
-                        } else {
-                            VStack(spacing: 16) {
-                                // Take Photo Button
-                                Button(action: { 
-                                    if UIImagePickerController.isSourceTypeAvailable(.camera) {
-                                        showingCamera = true
-                                    } else {
-                                        showingSimulatorAlert = true
-                                    }
-                                }) {
-                                    VStack(spacing: 12) {
-                                        Image(systemName: UIImagePickerController.isSourceTypeAvailable(.camera) ? "camera.fill" : "camera.fill")
-                                            .font(.system(size: 40))
-                                            .foregroundColor(.primary)
-                                        
-                                        Text(UIImagePickerController.isSourceTypeAvailable(.camera) ? "take photo" : "take photo (simulator)")
-                                            .font(.custom("Poppins-SemiBold", size: 18))
-                                            .foregroundColor(.primary)
-                                        
-                                        if !UIImagePickerController.isSourceTypeAvailable(.camera) {
-                                            Text("will open photo library in simulator")
-                                                .font(.custom("Poppins-Regular", size: 12))
-                                                .foregroundColor(.textSecondary)
-                                        }
-                                    }
-                                    .frame(maxWidth: .infinity)
-                                    .frame(height: UIImagePickerController.isSourceTypeAvailable(.camera) ? 100 : 120)
-                                    .background(Color.background)
+                            // Display selected image with overlay controls
+                            ZStack(alignment: .topTrailing) {
+                                Image(uiImage: selectedImage)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(maxHeight: 200)
                                     .cornerRadius(12)
-                                    .overlay(
-                                        RoundedRectangle(cornerRadius: 12)
-                                            .stroke(Color.primary, style: StrokeStyle(lineWidth: 2, dash: [5]))
-                                    )
+                                    .clipped()
+                                
+                                // Remove button overlay
+                                Button(action: { selectedImage = nil }) {
+                                    Image(systemName: "xmark.circle.fill")
+                                        .font(.title2)
+                                        .foregroundColor(.white)
+                                        .background(Color.black.opacity(0.6))
+                                        .clipShape(Circle())
+                                }
+                                .padding(8)
+                            }
+                        } else {
+                            // Photo selection options
+                            VStack(spacing: 20) {
+                                // Main photo area with dashed border
+                                VStack(spacing: 16) {
+                                    Image(systemName: "camera.fill")
+                                        .font(.system(size: 48))
+                                        .foregroundColor(Color(red: 0.373, green: 0.424, blue: 0.216))
+                                    
+                                    VStack(spacing: 4) {
+                                        Text("add a photo")
+                                            .font(.custom("Poppins-SemiBold", size: 20))
+                                            .foregroundColor(.darkGreen)
+                                        
+                                        Text("take a new photo or choose from gallery")
+                                            .font(.custom("Poppins-Regular", size: 14))
+                                            .foregroundColor(.secondary)
+                                            .multilineTextAlignment(.center)
+                                    }
+                                }
+                                .frame(maxWidth: .infinity)
+                                .frame(height: 140)
+                                .background(Color(.systemGray6))
+                                .cornerRadius(12)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 12)
+                                        .stroke(Color(red: 0.373, green: 0.424, blue: 0.216), style: StrokeStyle(lineWidth: 2, dash: [8, 4]))
+                                )
+                                
+                                // Action buttons
+                                HStack(spacing: 12) {
+                                    // Take Photo Button
+                                    Button(action: { 
+                                        if UIImagePickerController.isSourceTypeAvailable(.camera) {
+                                            showingCamera = true
+                                        } else {
+                                            showingSimulatorAlert = true
+                                        }
+                                    }) {
+                                        HStack(spacing: 8) {
+                                            Image(systemName: "camera.fill")
+                                                .font(.title3)
+                                            Text("camera")
+                                                .font(.custom("Poppins-Medium", size: 16))
+                                        }
+                                        .foregroundColor(.white)
+                                        .frame(maxWidth: .infinity)
+                                        .padding(.vertical, 12)
+                                        .background(Color(red: 0.373, green: 0.424, blue: 0.216))
+                                        .cornerRadius(25)
+                                    }
+                                    
+                                    // Gallery Button
+                                    Button(action: { showingImagePicker = true }) {
+                                        HStack(spacing: 8) {
+                                            Image(systemName: "photo.on.rectangle")
+                                                .font(.title3)
+                                            Text("gallery")
+                                                .font(.custom("Poppins-Medium", size: 16))
+                                        }
+                                        .foregroundColor(Color(red: 0.373, green: 0.424, blue: 0.216))
+                                        .frame(maxWidth: .infinity)
+                                        .padding(.vertical, 12)
+                                        .background(Color(.systemGray6))
+                                        .cornerRadius(25)
+                                        .overlay(
+                                            RoundedRectangle(cornerRadius: 25)
+                                                .stroke(Color(red: 0.373, green: 0.424, blue: 0.216), lineWidth: 1)
+                                        )
+                                    }
                                 }
                                 
-                                // Select from Gallery Button
-                                Button(action: { showingImagePicker = true }) {
-                                    HStack {
-                                        Image(systemName: "photo.on.rectangle")
-                                            .foregroundColor(.primary)
-                                        Text("select from gallery")
-                                            .foregroundColor(.primary)
-                                    }
-                                    .font(.custom("Poppins-Regular", size: 16))
+                                if !UIImagePickerController.isSourceTypeAvailable(.camera) {
+                                    Text("camera will open photo library in simulator")
+                                        .font(.custom("Poppins-Regular", size: 12))
+                                        .foregroundColor(.secondary)
+                                        .multilineTextAlignment(.center)
                                 }
                             }
                         }
                         
-                        if selectedImage != nil {
-                            HStack(spacing: 16) {
-                                Button("retake photo") {
-                                    showingCamera = true
-                                }
-                                .foregroundColor(.primary)
-                                
-                                Button("change photo") {
-                                    showingImagePicker = true
-                                }
-                                .foregroundColor(.primary)
-                                
-                                Spacer()
-                                
-                                Button("remove") {
-                                    selectedImage = nil
-                                }
-                                .foregroundColor(.secondary)
-                            }
-                        }
                     }
                     
                     // Form Section
                     VStack(spacing: 20) {
                         // Item Name
                         VStack(alignment: .leading, spacing: 8) {
-                            Text("item name")
+                            Text("name")
                                 .font(.custom("Poppins-SemiBold", size: 18))
                                 .foregroundColor(.textPrimary)
                             
@@ -119,12 +145,19 @@ struct AddItemView: View {
                                 .font(.custom("Poppins-SemiBold", size: 18))
                                 .foregroundColor(.textPrimary)
                             
-                            Picker("category", selection: $selectedCategory) {
-                                ForEach(categories, id: \.self) { category in
-                                    Text(category).tag(category)
+                            ScrollView(.horizontal, showsIndicators: false) {
+                                HStack(spacing: 12) {
+                                    ForEach(categories, id: \.self) { category in
+                                        CategoryButton(
+                                            title: category,
+                                            isSelected: selectedCategory == category
+                                        ) {
+                                            selectedCategory = category
+                                        }
+                                    }
                                 }
+                                .padding(.horizontal, 4)
                             }
-                            .pickerStyle(SegmentedPickerStyle())
                         }
                         
                     }
@@ -133,15 +166,15 @@ struct AddItemView: View {
                     Button(action: addItem) {
                         HStack {
                             Image(systemName: "plus.circle.fill")
-                            Text("record item")
+                                .font(.title2)
+                            Text("add item")
                         }
-                        .font(.custom("Poppins-SemiBold", size: 18))
+                        .font(.custom("Poppins-SemiBold", size: 16))
                         .foregroundColor(.white)
                         .frame(maxWidth: .infinity)
-                        .padding(.vertical, 16)
-                        .padding(.horizontal, 24)
-                        .background(selectedImage != nil && !itemName.isEmpty ? Color.primary : Color.gray)
-                        .cornerRadius(25) // More rounded like the design
+                        .padding(.vertical, 12)
+                        .background(selectedImage != nil && !itemName.isEmpty ? Color(red: 0.373, green: 0.424, blue: 0.216) : Color.gray)
+                        .cornerRadius(50)
                     }
                     .disabled(selectedImage == nil || itemName.isEmpty)
                     
@@ -149,7 +182,7 @@ struct AddItemView: View {
                 }
                 .padding()
         }
-        .navigationTitle("record item")
+        .navigationTitle("add item")
         .navigationBarTitleDisplayMode(.large)
         .onAppear {
             let appearance = UINavigationBarAppearance()
@@ -258,6 +291,7 @@ struct ImagePicker: UIViewControllerRepresentable {
         }
     }
 }
+
 
 struct AddItemView_Previews: PreviewProvider {
     static var previews: some View {

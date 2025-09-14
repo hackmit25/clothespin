@@ -15,15 +15,16 @@ struct ContentView: View {
             
             ClosetView(itemManager: itemManager)
                 .tabItem {
-                    Image(systemName: "door.left.hand.open")
+                    Image(systemName: "cabinet.fill")
                     Text("closet")
                 }
                 .tag(1)
             
             AddItemView(itemManager: itemManager, selectedTab: $selectedTab)
                 .tabItem {
-                    Image(systemName: "tshirt.fill")
-                    Text("record item")
+                    Image(systemName: "plus.circle.fill")
+                        .font(.title)
+                    Text("add item")
                 }
                 .tag(2)
             
@@ -41,20 +42,30 @@ struct ContentView: View {
                 }
                 .tag(4)
         }
-        .accentColor(.primary)
+        .accentColor(Color(red: 0.373, green: 0.424, blue: 0.216)) // #5F6C37
         .background(Color.white)
         .onAppear {
-            // Remove tab bar border and set white background
+            // Customize tab bar appearance
             let appearance = UITabBarAppearance()
             appearance.configureWithOpaqueBackground()
             appearance.backgroundColor = UIColor.white
-            appearance.shadowColor = .clear // Remove border/shadow
+            appearance.shadowColor = .clear
+            
+            // Style the middle button (add item) differently
+            let itemAppearance = UITabBarItemAppearance()
+            itemAppearance.normal.iconColor = UIColor.gray
+            itemAppearance.selected.iconColor = UIColor(red: 0.373, green: 0.424, blue: 0.216, alpha: 1.0)
+            itemAppearance.normal.titleTextAttributes = [.foregroundColor: UIColor.gray]
+            itemAppearance.selected.titleTextAttributes = [.foregroundColor: UIColor(red: 0.373, green: 0.424, blue: 0.216, alpha: 1.0)]
+            
+            appearance.stackedLayoutAppearance = itemAppearance
             
             UITabBar.appearance().standardAppearance = appearance
             UITabBar.appearance().scrollEdgeAppearance = appearance
         }
     }
 }
+
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
