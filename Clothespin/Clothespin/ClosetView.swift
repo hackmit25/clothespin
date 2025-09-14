@@ -149,17 +149,18 @@ struct ClothingItemCard: View {
                     .clipped()
             
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(item.name)
-                        .font(.subheadline)
-                        .fontWeight(.medium)
-                        .foregroundColor(.textPrimary)
-                        .lineLimit(2)
-                    
+                    // Brand tag (styled like wear status)
                     if let brand = item.brand {
-                        Text(brand)
-                            .font(.caption)
-                            .foregroundColor(.textSecondary)
-                            .lineLimit(1)
+                        HStack(spacing: 4) {
+                            Circle()
+                                .fill(Color.blue)
+                                .frame(width: 6, height: 6)
+                            
+                            Text(brand)
+                                .font(.caption)
+                                .foregroundColor(.textSecondary)
+                                .lineLimit(1)
+                        }
                     }
                     
                     // Wear status indicator
@@ -231,14 +232,14 @@ struct ImageModalView: View {
                     } else {
                         // Fallback if no image
                         Rectangle()
-                            .fill(Color.cream)
+                            .fill(Color.gray.opacity(0.1))
                             .aspectRatio(4/3, contentMode: .fit)
                             .cornerRadius(12)
                             .overlay(
                                 VStack(spacing: 16) {
                                     Image(systemName: item.category.icon)
                                         .font(.system(size: 60))
-                                        .foregroundColor(.sageGreen)
+                                        .foregroundColor(.blue)
                                     
                                     Text("No Image Available")
                                         .font(.headline)
@@ -253,7 +254,7 @@ struct ImageModalView: View {
                         Text(item.name)
                             .font(.title2)
                             .fontWeight(.bold)
-                            .foregroundColor(.darkGreen)
+                            .foregroundColor(.primary)
                         
                         if let brand = item.brand {
                             Text(brand)
@@ -268,7 +269,7 @@ struct ImageModalView: View {
                             Text(item.category.rawValue)
                                 .font(.subheadline)
                                 .fontWeight(.medium)
-                                .foregroundColor(.darkGreen)
+                                .foregroundColor(.primary)
                         }
                         
                         HStack {
@@ -278,7 +279,7 @@ struct ImageModalView: View {
                             Text(item.color)
                                 .font(.subheadline)
                                 .fontWeight(.medium)
-                                .foregroundColor(.darkGreen)
+                                .foregroundColor(.primary)
                         }
                         
                         HStack {
@@ -288,7 +289,7 @@ struct ImageModalView: View {
                             Text(item.size)
                                 .font(.subheadline)
                                 .fontWeight(.medium)
-                                .foregroundColor(.darkGreen)
+                                .foregroundColor(.primary)
                         }
                         
                         // Wear status
@@ -314,7 +315,7 @@ struct ImageModalView: View {
                 }
                 .padding()
             }
-            .background(Color.cream)
+            .background(Color.gray.opacity(0.05))
             .navigationTitle("Item Details")
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarItems(

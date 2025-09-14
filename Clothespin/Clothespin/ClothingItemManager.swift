@@ -10,9 +10,9 @@ class ClothingItemManager: ObservableObject {
         
         // Create a new clothing item
         let newItem = ClothingItem(
-            name: name,
+            name: name, // Just use the brand name as the item name
             category: clothingCategory,
-            brand: nil,
+            brand: name, // Use the brand name as the brand
             color: "Unknown", // We could add color detection later
             size: "Unknown", // We could add size input later
             lastWorn: nil,

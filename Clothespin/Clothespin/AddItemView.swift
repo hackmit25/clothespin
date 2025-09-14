@@ -7,11 +7,29 @@ struct AddItemView: View {
     @State private var showingImagePicker = false
     @State private var showingCamera = false
     @State private var showingSimulatorAlert = false
-    @State private var itemName = ""
+    @State private var brandName = ""
     @State private var selectedCategory = "Tops"
     @State private var showingSuccessAlert = false
+    @State private var showingBrandSuggestions = false
+    @State private var searchTask: Task<Void, Never>?
     
     let categories = ["Tops", "Bottoms", "Dresses", "Shoes", "Accessories"]
+    
+    // Popular fashion brands for auto-suggestions
+    let brandSuggestions = [
+        "Nike", "Adidas", "Zara", "H&M", "Uniqlo", "Gap", "Levi's", "Calvin Klein",
+        "Tommy Hilfiger", "Ralph Lauren", "Champion", "Puma", "Converse", "Vans",
+        "Urban Outfitters", "Forever 21", "ASOS", "Shein", "Depop", "Poshmark",
+        "ThredUp", "Vintage", "Custom", "Other"
+    ]
+    
+    private var filteredBrands: [String] {
+        if brandName.isEmpty {
+            return brandSuggestions
+        } else {
+            return brandSuggestions.filter { $0.lowercased().contains(brandName.lowercased()) }
+        }
+    }
     
     var body: some View {
         NavigationView {
@@ -103,14 +121,69 @@ struct AddItemView: View {
                     
                     // Form Section
                     VStack(spacing: 20) {
-                        // Item Name
+                        // Brand Selection
                         VStack(alignment: .leading, spacing: 8) {
-                            Text("Item Name")
+                            Text("Brand")
                                 .font(.headline)
                                 .foregroundColor(.textPrimary)
                             
-                            TextField("Enter item name", text: $itemName)
-                                .textFieldStyle(RoundedBorderTextFieldStyle())
+                            VStack(spacing: 0) {
+                                TextField("Enter brand name", text: $brandName)
+                                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                                    .onTapGesture {
+                                        showingBrandSuggestions = true
+                                    }
+                                    .onChange(of: brandName) { _ in
+                                        showingBrandSuggestions = true
+                                        
+                                        // Cancel previous search task
+                                        searchTask?.cancel()
+                                        
+                                        // Start new search task with delay
+                                        searchTask = Task {
+                                            try? await Task.sleep(nanoseconds: 2_000_000_000) // 2 seconds
+                                            if !Task.isCancelled {
+                                                showingBrandSuggestions = false
+                                            }
+                                        }
+                                    }
+                                
+                                // Brand Suggestions Dropdown
+                                if showingBrandSuggestions && !filteredBrands.isEmpty {
+                                    ScrollView {
+                                        LazyVStack(spacing: 0) {
+                                            ForEach(filteredBrands, id: \.self) { brand in
+                                                Button(action: {
+                                                    brandName = brand
+                                                    showingBrandSuggestions = false
+                                                }) {
+                                                    HStack {
+                                                        Text(brand)
+                                                            .foregroundColor(.textPrimary)
+                                                        Spacer()
+                                                    }
+                                                    .padding(.horizontal, 12)
+                                                    .padding(.vertical, 8)
+                                                }
+                                                .background(Color.background)
+                                                
+                                                if brand != filteredBrands.last {
+                                                    Divider()
+                                                        .padding(.leading, 12)
+                                                }
+                                            }
+                                        }
+                                    }
+                                    .frame(maxHeight: 200)
+                                    .background(Color.background)
+                                    .cornerRadius(8)
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 8)
+                                            .stroke(Color.primary.opacity(0.3), lineWidth: 1)
+                                    )
+                                    .shadow(radius: 2)
+                                }
+                            }
                         }
                         
                         // Category Selection
@@ -141,14 +214,17 @@ struct AddItemView: View {
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 16)
                         .padding(.horizontal, 24)
-                        .background(selectedImage != nil && !itemName.isEmpty ? Color.primary : Color.gray)
+                        .background(selectedImage != nil && !brandName.isEmpty ? Color.primary : Color.gray)
                         .cornerRadius(25) // More rounded like the design
                     }
-                    .disabled(selectedImage == nil || itemName.isEmpty)
+                    .disabled(selectedImage == nil || brandName.isEmpty)
                     
                     Spacer(minLength: 50)
                 }
                 .padding()
+                .onTapGesture {
+                    showingBrandSuggestions = false
+                }
         }
         .navigationTitle("Record Item")
         .navigationBarTitleDisplayMode(.large)
@@ -181,15 +257,16 @@ struct AddItemView: View {
         guard let image = selectedImage else { return }
         
         // Add item to the manager
-        itemManager.addItem(name: itemName, category: selectedCategory, image: image)
+        itemManager.addItem(name: brandName, category: selectedCategory, image: image)
         
         // Show success alert
         showingSuccessAlert = true
         
         // Reset form
         selectedImage = nil
-        itemName = ""
+        brandName = ""
         selectedCategory = "Tops"
+        showingBrandSuggestions = false
     }
 }
 
