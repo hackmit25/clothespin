@@ -131,7 +131,7 @@ struct ClosetView: View {
             .navigationBarTitleDisplayMode(.large)
             .sheet(isPresented: $showingImageModal) {
                 if let item = selectedItem {
-                    ImageModalView(item: item)
+                    ImageModalView(item: item, itemManager: itemManager)
                 }
             }
         }
@@ -273,11 +273,14 @@ struct ClothingItemCard: View {
 
 struct ImageModalView: View {
     let item: ClothingItem
+    @ObservedObject var itemManager: ClothingItemManager
     @Environment(\.presentationMode) var presentationMode
     @State private var loadedImage: UIImage?
+    @State private var showingDeleteAlert = false
     
-    init(item: ClothingItem) {
+    init(item: ClothingItem, itemManager: ClothingItemManager) {
         self.item = item
+        self.itemManager = itemManager
     }
     
     var body: some View {
@@ -306,7 +309,7 @@ struct ImageModalView: View {
                     
                     // Item name
                     Text(item.name)
-                        .font(.custom("Poppins-Bold", size: 24))
+                        .font(.custom("Poppins-ExtraBold", size: 24))
                         .foregroundColor(.primary)
                         .multilineTextAlignment(.leading)
                     
@@ -495,6 +498,24 @@ struct ImageModalView: View {
                     .background(Color(.systemBackground))
                     .cornerRadius(12)
                     .shadow(color: Color(.systemGray4), radius: 2, x: 0, y: 1)
+                    
+                    // Delete Button
+                    Button(action: {
+                        showingDeleteAlert = true
+                    }) {
+                        HStack {
+                            Image(systemName: "trash")
+                                .font(.system(size: 16))
+                            Text("delete item")
+                                .font(.custom("Poppins-Medium", size: 16))
+                        }
+                        .foregroundColor(.white)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 12)
+                        .background(Color.red)
+                        .cornerRadius(10)
+                    }
+                    .padding(.top, 8)
                 }
                 .padding(.horizontal, 20)
                 .padding(.bottom, 20)
@@ -509,6 +530,15 @@ struct ImageModalView: View {
             )
             .onAppear {
                 loadImage()
+            }
+            .alert("Delete Item", isPresented: $showingDeleteAlert) {
+                Button("Cancel", role: .cancel) { }
+                Button("Delete", role: .destructive) {
+                    itemManager.deleteItem(item)
+                    presentationMode.wrappedValue.dismiss()
+                }
+            } message: {
+                Text("Are you sure you want to delete this item? This action cannot be undone.")
             }
         }
     }

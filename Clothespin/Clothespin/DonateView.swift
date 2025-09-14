@@ -17,20 +17,39 @@ struct DonateView: View {
     @State private var isLoading = false
     @State private var searchText = ""
     @State private var showingQRModal = false
+    @State private var showingRewardsModal = false
     @State private var donationCount = 1
     @State private var selectedLocation = "Local Donation Center"
     @State private var donationHistory: [DonationRecord] = []
     
+    private func tabTitle(for index: Int) -> String {
+        switch index {
+        case 0: return "locations"
+        case 1: return "my donations"
+        case 2: return "impact"
+        default: return ""
+        }
+    }
+    
     var body: some View {
         NavigationView {
             VStack(spacing: 0) {
-                // Tab Selector
-                Picker("View", selection: $selectedTab) {
-                    Text("nearby").tag(0)
-                    Text("my donations").tag(1)
-                    Text("impact").tag(2)
+                // Tab Selector - Custom Button Style
+                HStack(spacing: 12) {
+                    ForEach(0..<3) { index in
+                        Button(action: {
+                            selectedTab = index
+                        }) {
+                            Text(tabTitle(for: index))
+                                .font(.custom("Poppins-Medium", size: 16))
+                                .padding(.horizontal, 16)
+                                .padding(.vertical, 8)
+                                .background(selectedTab == index ? Color(red: 0.373, green: 0.424, blue: 0.216) : Color(.systemGray6))
+                                .foregroundColor(selectedTab == index ? .white : .primary)
+                                .cornerRadius(20)
+                        }
+                    }
                 }
-                .pickerStyle(SegmentedPickerStyle())
                 .padding()
                 .background(Color.white)
                 
@@ -41,7 +60,7 @@ struct DonateView: View {
                         .tag(0)
                     
                     // My Donations Tab
-                    MyDonationsView(donationHistory: donationHistory)
+                    MyDonationsTabView(donationHistory: donationHistory)
                         .tag(1)
                     
                     // Impact Tab
@@ -66,9 +85,32 @@ struct DonateView: View {
                 UINavigationBar.appearance().scrollEdgeAppearance = appearance
             }
             .toolbar {
-                ToolbarItem(placement: .principal) {
-                    HStack {
-                        Spacer()
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    HStack(spacing: 16) {
+                        // Points Display
+                        Button(action: {
+                            showingRewardsModal = true
+                        }) {
+                            HStack(spacing: 8) {
+                                Image(systemName: "star.fill")
+                                    .font(.subheadline)
+                                    .foregroundColor(.yellow)
+                                
+                                Text("1,250")
+                                    .font(.custom("Poppins-SemiBold", size: 16))
+                                    .foregroundColor(.primary)
+                            }
+                            .padding(.horizontal, 12)
+                            .padding(.vertical, 6)
+                            .background(Color.white)
+                            .cornerRadius(16)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 16)
+                                    .stroke(Color.border, lineWidth: 1)
+                            )
+                        }
+                        
+                        // QR Code Button
                         Button(action: {
                             showingQRModal = true
                         }) {
@@ -88,6 +130,9 @@ struct DonateView: View {
                     pointsManager: pointsManager
                 )
             }
+            .sheet(isPresented: $showingRewardsModal) {
+                RewardsModal(pointsManager: pointsManager, isPresented: $showingRewardsModal)
+            }
         }
     }
 }
@@ -104,13 +149,13 @@ struct NearbyLocationsView: View {
         VStack(spacing: 0) {
             // Search Bar
             HStack {
-                TextField("Search city or address", text: $searchText)
+                TextField("search city or address", text: $searchText)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .onSubmit {
                         searchDonationCenters()
                     }
                 
-                Button("Search") {
+                Button("search") {
                     searchDonationCenters()
                 }
                 .disabled(searchText.isEmpty)
@@ -179,6 +224,9 @@ struct NearbyLocationsView: View {
                 .buttonStyle(.borderedProminent)
                 .padding()
             }
+            
+            Spacer()
+                .frame(height: 16)
             
             // Map View
             Map(coordinateRegion: $locationManager.region, annotationItems: locations) { location in
@@ -333,7 +381,8 @@ struct MyDonationsView: View {
                 // Recent Donations
                 VStack(alignment: .leading, spacing: 16) {
                     Text("recent donations")
-                        .font(.custom("Poppins-Bold", size: 22))
+                        .font(.custom("Poppins-SemiBold", size: 18))
+                        .foregroundColor(.darkGreen)
                         .padding(.horizontal)
                     
                     VStack(spacing: 16) {
@@ -549,55 +598,6 @@ struct DonateStatCard: View {
     }
 }
 
-struct DonationItemCard: View {
-    let icon: String
-    let title: String
-    let description: String
-    let date: String
-    
-    var body: some View {
-        HStack(spacing: 12) {
-            Image(systemName: icon)
-                .font(.title2)
-                .foregroundColor(.primary)
-                .frame(width: 30)
-            
-            VStack(alignment: .leading, spacing: 4) {
-                Text(title)
-                    .font(.subheadline)
-                    .fontWeight(.medium)
-                    .foregroundColor(.textPrimary)
-                
-                Text(description)
-                    .font(.caption)
-                    .foregroundColor(.textSecondary)
-                    .lineLimit(2)
-                
-                Text(date)
-                    .font(.caption2)
-                    .foregroundColor(.primary)
-                    .fontWeight(.medium)
-            }
-            
-            Spacer()
-            
-            Button("Donate") {
-                // TODO: Handle donation action
-            }
-            .font(.caption)
-            .fontWeight(.medium)
-            .foregroundColor(.white)
-            .padding(.horizontal, 16)
-            .padding(.vertical, 8)
-            .background(Color.primary) // Dark olive green
-            .cornerRadius(20) // More rounded like the design
-        }
-        .padding()
-        .background(Color.cardBackground)
-        .cornerRadius(12)
-        .shadow(color: Color.border, radius: 2, x: 0, y: 1)
-    }
-}
 
 struct EmptyStateCard: View {
     let icon: String
@@ -916,6 +916,275 @@ struct DonationQRModal: View {
         } message: {
             Text("Thank you for your donation of \(donationCount) item(s) to \(selectedLocation)!")
         }
+    }
+}
+
+struct MyDonationsTabView: View {
+    let donationHistory: [DonationRecord]
+    @StateObject private var itemManager = ClothingItemManager()
+    
+    
+    // Get the 2 least worn items for recent donations
+    private var recentDonations: [ClothingItem] {
+        let allItems = itemManager.items
+        let sortedByWearCount = allItems.sorted { $0.wearCount < $1.wearCount }
+        return Array(sortedByWearCount.prefix(2))
+    }
+    
+    var body: some View {
+        ScrollView {
+            VStack(spacing: 20) {
+                // Stats Overview
+                VStack(spacing: 16) {
+                    Text("your impact")
+                        .font(.custom("Poppins-SemiBold", size: 18))
+                        .foregroundColor(.darkGreen)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    
+                    LazyVGrid(columns: [
+                        GridItem(.flexible()),
+                        GridItem(.flexible())
+                    ], spacing: 16) {
+                        // Total Items Donated
+                        VStack(spacing: 6) {
+                            Text("2")
+                                .font(.custom("Poppins-Bold", size: 28))
+                                .foregroundColor(.white)
+                            Text("items donated")
+                                .font(.custom("Poppins-SemiBold", size: 16))
+                                .foregroundColor(.white)
+                                .multilineTextAlignment(.center)
+                        }
+                        .frame(height: 80)
+                        .frame(maxWidth: .infinity)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 8)
+                        .background(Color.sageGreen)
+                        .cornerRadius(12)
+                        .shadow(color: Color(.systemGray4), radius: 2, x: 0, y: 1)
+                        
+                        // Total Donations
+                        VStack(spacing: 6) {
+                            Text("1")
+                                .font(.custom("Poppins-Bold", size: 28))
+                                .foregroundColor(.white)
+                            Text("donation made")
+                                .font(.custom("Poppins-SemiBold", size: 16))
+                                .foregroundColor(.white)
+                                .multilineTextAlignment(.center)
+                        }
+                        .frame(height: 80)
+                        .frame(maxWidth: .infinity)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 8)
+                        .background(Color.darkGreen)
+                        .cornerRadius(12)
+                        .shadow(color: Color(.systemGray4), radius: 2, x: 0, y: 1)
+                        
+                        // Carbon Saved (realistic estimate: ~54kg CO2 for 2 items)
+                        VStack(spacing: 6) {
+                            Text("54kg")
+                                .font(.custom("Poppins-Bold", size: 28))
+                                .foregroundColor(.white)
+                            Text("CO₂ saved")
+                                .font(.custom("Poppins-SemiBold", size: 16))
+                                .foregroundColor(.white)
+                                .multilineTextAlignment(.center)
+                        }
+                        .frame(height: 80)
+                        .frame(maxWidth: .infinity)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 8)
+                        .background(Color.warmBrown)
+                        .cornerRadius(12)
+                        .shadow(color: Color(.systemGray4), radius: 2, x: 0, y: 1)
+                        
+                        // Water Saved (realistic estimate: ~4,000L for 2 items)
+                        VStack(spacing: 6) {
+                            Text("4kL")
+                                .font(.custom("Poppins-Bold", size: 28))
+                                .foregroundColor(.white)
+                            Text("water saved")
+                                .font(.custom("Poppins-SemiBold", size: 16))
+                                .foregroundColor(.white)
+                                .multilineTextAlignment(.center)
+                        }
+                        .frame(height: 80)
+                        .frame(maxWidth: .infinity)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 8)
+                        .background(Color.rust)
+                        .cornerRadius(12)
+                        .shadow(color: Color(.systemGray4), radius: 2, x: 0, y: 1)
+                    }
+                }
+                .padding(.horizontal)
+                
+                // Recent Donations
+                VStack(alignment: .leading, spacing: 16) {
+                    Text("recent donations")
+                        .font(.custom("Poppins-SemiBold", size: 18))
+                        .foregroundColor(.darkGreen)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.horizontal)
+                    
+                    LazyVGrid(columns: [
+                        GridItem(.flexible()),
+                        GridItem(.flexible())
+                    ], spacing: 16) {
+                        ForEach(recentDonations) { item in
+                            DonationItemCard(item: item)
+                        }
+                    }
+                    .padding(.horizontal)
+                }
+                
+                // Donation History
+                if !donationHistory.isEmpty {
+                    VStack(alignment: .leading, spacing: 16) {
+                        Text("donation history")
+                            .font(.custom("Poppins-Bold", size: 20))
+                            .foregroundColor(.primary)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.horizontal)
+                        
+                        LazyVStack(spacing: 12) {
+                            ForEach(donationHistory.reversed()) { donation in
+                                DonationHistoryCard(donation: donation)
+                            }
+                        }
+                        .padding(.horizontal)
+                    }
+                }
+                
+                Spacer(minLength: 50)
+            }
+        }
+        .background(Color.white)
+    }
+}
+
+struct DonationItemCard: View {
+    let item: ClothingItem
+    @State private var loadedImage: UIImage?
+    
+    var body: some View {
+        VStack(spacing: 0) {
+            // Image
+            Rectangle()
+                .fill(Color(.systemGray6))
+                .aspectRatio(4/5, contentMode: .fit)
+                .overlay(
+                    Group {
+                        if let image = loadedImage {
+                            Image(uiImage: image)
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                        } else {
+                            Image(systemName: "tshirt")
+                                .font(.system(size: 40))
+                                .foregroundColor(.gray)
+                        }
+                    }
+                )
+                .cornerRadius(8, corners: [.topLeft, .topRight])
+            
+            // Text content
+            VStack(alignment: .leading, spacing: 4) {
+                Text(item.name)
+                    .font(.custom("Poppins-Medium", size: 14))
+                    .foregroundColor(.primary)
+                    .lineLimit(2)
+                    .multilineTextAlignment(.leading)
+                
+                Text("donated")
+                    .font(.custom("Poppins-Regular", size: 12))
+                    .foregroundColor(.secondary)
+            }
+            .padding(8)
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .padding(12)
+        .background(Color(.systemBackground))
+        .cornerRadius(8)
+        .shadow(color: Color(.systemGray4), radius: 2, x: 0, y: 1)
+        .onAppear {
+            loadedImage = UIImage(named: item.imageName)
+        }
+    }
+}
+
+struct DonationHistoryCard: View {
+    let donation: DonationRecord
+    
+    var body: some View {
+        HStack(spacing: 16) {
+            // Icon
+            Image(systemName: "gift.fill")
+                .font(.title2)
+                .foregroundColor(.green)
+                .frame(width: 40, height: 40)
+                .background(Color.green.opacity(0.1))
+                .cornerRadius(20)
+            
+            // Content
+            VStack(alignment: .leading, spacing: 4) {
+                Text("\(donation.itemCount) item\(donation.itemCount == 1 ? "" : "s") donated")
+                    .font(.custom("Poppins-Medium", size: 16))
+                    .foregroundColor(.primary)
+                
+                Text(donation.location)
+                    .font(.custom("Poppins-Regular", size: 14))
+                    .foregroundColor(.secondary)
+                
+                Text(formatDate(donation.date))
+                    .font(.custom("Poppins-Regular", size: 12))
+                    .foregroundColor(.secondary)
+            }
+            
+            Spacer()
+            
+            // Points earned
+            VStack(alignment: .trailing, spacing: 2) {
+                Text("+\(donation.itemCount * 50)")
+                    .font(.custom("Poppins-Bold", size: 16))
+                    .foregroundColor(.green)
+                Text("points")
+                    .font(.custom("Poppins-Regular", size: 12))
+                    .foregroundColor(.secondary)
+            }
+        }
+        .padding()
+        .background(Color(.systemBackground))
+        .cornerRadius(12)
+        .shadow(color: Color(.systemGray4), radius: 2, x: 0, y: 1)
+    }
+    
+    private func formatDate(_ date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        return formatter.string(from: date)
+    }
+}
+
+// Extension for corner radius
+extension View {
+    func cornerRadius(_ radius: CGFloat, corners: UIRectCorner) -> some View {
+        clipShape(RoundedCorner(radius: radius, corners: corners))
+    }
+}
+
+struct RoundedCorner: Shape {
+    var radius: CGFloat = .infinity
+    var corners: UIRectCorner = .allCorners
+
+    func path(in rect: CGRect) -> Path {
+        let path = UIBezierPath(
+            roundedRect: rect,
+            byRoundingCorners: corners,
+            cornerRadii: CGSize(width: radius, height: radius)
+        )
+        return Path(path.cgPath)
     }
 }
 

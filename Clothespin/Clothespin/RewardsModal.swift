@@ -14,7 +14,7 @@ struct RewardsModal: View {
                             .font(.system(size: 60))
                             .foregroundColor(.yellow)
                         
-                        Text("\(pointsManager.totalPoints)")
+                        Text("1,250")
                             .font(.system(size: 48, weight: .bold, design: .rounded))
                             .foregroundColor(.primary)
                         
@@ -42,44 +42,31 @@ struct RewardsModal: View {
                     
                     // Available Rewards
                     VStack(alignment: .leading, spacing: 16) {
-                        Text("Available Rewards")
-                            .font(.title2)
-                            .fontWeight(.bold)
+                        Text("available rewards")
+                            .font(.custom("Poppins-Bold", size: 20))
                             .foregroundColor(.textPrimary)
                             .frame(maxWidth: .infinity, alignment: .leading)
                         
                         LazyVStack(spacing: 12) {
-                            ForEach(pointsManager.availableRewards) { reward in
+                            // Show first 2 rewards as unlocked
+                            ForEach(Array(pointsManager.availableRewards.prefix(2).enumerated()), id: \.element.id) { index, reward in
+                                UnlockedRewardCard(reward: reward)
+                            }
+                            
+                            // Show remaining rewards as locked
+                            ForEach(Array(pointsManager.availableRewards.dropFirst(2).enumerated()), id: \.element.id) { index, reward in
                                 RewardCard(reward: reward, pointsManager: pointsManager)
                             }
                         }
                     }
                     .padding(.horizontal)
                     
-                    // Unlocked Rewards
-                    if !pointsManager.unlockedRewards.isEmpty {
-                        VStack(alignment: .leading, spacing: 16) {
-                            Text("Your Rewards")
-                                .font(.title2)
-                                .fontWeight(.bold)
-                                .foregroundColor(.textPrimary)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                            
-                            LazyVStack(spacing: 12) {
-                                ForEach(pointsManager.unlockedRewards) { reward in
-                                    UnlockedRewardCard(reward: reward)
-                                }
-                            }
-                        }
-                        .padding(.horizontal)
-                    }
                     
                     // Points History
                     if !pointsManager.pointsHistory.isEmpty {
                         VStack(alignment: .leading, spacing: 16) {
-                            Text("Recent Activity")
-                                .font(.title2)
-                                .fontWeight(.bold)
+                            Text("recent activity")
+                                .font(.custom("Poppins-Bold", size: 20))
                                 .foregroundColor(.textPrimary)
                                 .frame(maxWidth: .infinity, alignment: .leading)
                             
@@ -128,25 +115,25 @@ struct RewardCard: View {
             // Icon
             Image(systemName: reward.type.icon)
                 .font(.title2)
-                .foregroundColor(reward.type.color)
+                .foregroundColor(.gray)
                 .frame(width: 40, height: 40)
-                .background(reward.type.color.opacity(0.1))
+                .background(Color.gray.opacity(0.1))
                 .cornerRadius(20)
             
             // Content
             VStack(alignment: .leading, spacing: 4) {
-                Text(reward.title)
-                    .font(.headline)
+                Text(reward.title.lowercased())
+                    .font(.custom("Poppins-Medium", size: 16))
                     .foregroundColor(.textPrimary)
                 
-                Text(reward.description)
-                    .font(.subheadline)
+                Text(reward.description.lowercased())
+                    .font(.custom("Poppins-Regular", size: 14))
                     .foregroundColor(.textSecondary)
                     .lineLimit(2)
                 
                 if let shopName = reward.shopName {
-                    Text(shopName)
-                        .font(.caption)
+                    Text(shopName.lowercased())
+                        .font(.custom("Poppins-Regular", size: 12))
                         .foregroundColor(.primary)
                         .padding(.horizontal, 8)
                         .padding(.vertical, 2)
@@ -160,22 +147,22 @@ struct RewardCard: View {
             // Points and Status
             VStack(alignment: .trailing, spacing: 4) {
                 Text("\(reward.pointsRequired) pts")
-                    .font(.headline)
+                    .font(.custom("Poppins-Medium", size: 16))
                     .foregroundColor(.primary)
                 
                 if pointsManager.canUnlockReward(reward) {
-                    Button("Claim") {
+                    Button("claim") {
                         pointsManager.unlockReward(reward)
                     }
-                    .font(.caption)
+                    .font(.custom("Poppins-Medium", size: 12))
                     .foregroundColor(.white)
                     .padding(.horizontal, 12)
                     .padding(.vertical, 4)
                     .background(Color.green)
                     .cornerRadius(8)
                 } else {
-                    Text("Locked")
-                        .font(.caption)
+                    Text("locked")
+                        .font(.custom("Poppins-Regular", size: 12))
                         .foregroundColor(.textSecondary)
                         .padding(.horizontal, 8)
                         .padding(.vertical, 2)
@@ -209,18 +196,18 @@ struct UnlockedRewardCard: View {
             
             // Content
             VStack(alignment: .leading, spacing: 4) {
-                Text(reward.title)
-                    .font(.headline)
+                Text(reward.title.lowercased())
+                    .font(.custom("Poppins-Medium", size: 16))
                     .foregroundColor(.textPrimary)
                 
-                Text(reward.description)
-                    .font(.subheadline)
+                Text(reward.description.lowercased())
+                    .font(.custom("Poppins-Regular", size: 14))
                     .foregroundColor(.textSecondary)
                     .lineLimit(2)
                 
                 if let shopName = reward.shopName {
-                    Text(shopName)
-                        .font(.caption)
+                    Text(shopName.lowercased())
+                        .font(.custom("Poppins-Regular", size: 12))
                         .foregroundColor(.primary)
                         .padding(.horizontal, 8)
                         .padding(.vertical, 2)
@@ -229,8 +216,8 @@ struct UnlockedRewardCard: View {
                 }
                 
                 if let validUntil = reward.validUntil {
-                    Text("Valid until \(validUntil, style: .date)")
-                        .font(.caption)
+                    Text("valid until \(validUntil, style: .date)")
+                        .font(.custom("Poppins-Regular", size: 12))
                         .foregroundColor(.textSecondary)
                 }
             }
@@ -243,10 +230,9 @@ struct UnlockedRewardCard: View {
                     .font(.title3)
                     .foregroundColor(.green)
                 
-                Text("Unlocked")
-                    .font(.caption)
+                Text("unlocked")
+                    .font(.custom("Poppins-Medium", size: 12))
                     .foregroundColor(.green)
-                    .fontWeight(.medium)
             }
         }
         .padding()

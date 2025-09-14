@@ -313,4 +313,9 @@ class ClothingItemManager: ObservableObject {
             // Silent fail
         }
     }
+    
+    func deleteItem(_ item: ClothingItem) {
+        items.removeAll { $0.id == item.id }
+    }
+
 }

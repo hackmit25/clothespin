@@ -3,8 +3,6 @@ import SwiftUI
 struct HomeView: View {
     @Binding var selectedTab: Int
     @State private var showingProfileModal = false
-    @State private var showingRewardsModal = false
-    @StateObject private var pointsManager = PointsManager()
     
     var body: some View {
         NavigationView {
@@ -12,9 +10,9 @@ struct HomeView: View {
                 VStack(spacing: 20) {
                     // TOP: Outfit of the Day (Primary Action)
                     VStack(spacing: 16) {
-                        Text("1. catalog your closet")
-                            .font(.custom("Poppins-SemiBold", size: 20))
-                            .foregroundColor(.primary)
+                        Text("catalog your closet")
+                            .font(.custom("Poppins-SemiBold", size: 18))
+                            .foregroundColor(.darkGreen)
                             .frame(maxWidth: .infinity, alignment: .leading)
                         
                         Button(action: {
@@ -38,31 +36,29 @@ struct HomeView: View {
                     
                     // MIDDLE: News Feed with Quick Actions
                     VStack(alignment: .leading, spacing: 16) {
-                        Text("2. track your wardrobe")
-                            .font(.custom("Poppins-SemiBold", size: 20))
-                            .foregroundColor(.primary)
+                        Text("track your wardrobe")
+                            .font(.custom("Poppins-SemiBold", size: 18))
+                            .foregroundColor(.darkGreen)
                             .frame(maxWidth: .infinity, alignment: .leading)
                         
                         // Tracking highlights with quick actions
                         VStack(spacing: 12) {
                             // Good news - leads to insights
                             TrackingHighlightCard(
-                                type: .good,
                                 title: "great rotation!",
                                 message: "you've worn your black jeans 15 times this month",
-                                actionText: "view insights",
                                 itemImage: "img_001",
+                                iconName: "lightbulb.fill",
                                 action: { selectedTab = 3 } // Navigate to Stats/Insights tab
                             )
                             
                             
                             // Closet audit - leads to closet sorted by least worn
                             TrackingHighlightCard(
-                                type: .audit,
                                 title: "closet audit needed",
                                 message: "5 items haven't been worn in 30+ days",
-                                actionText: "review closet",
                                 itemImage: "img_012",
+                                iconName: "cabinet.fill",
                                 action: { 
                                     selectedTab = 1 // Navigate to Closet tab
                                     // TODO: Set sort to "least recent" when we implement that
@@ -75,8 +71,8 @@ struct HomeView: View {
                             }) {
                                 HStack(spacing: 8) {
                                     Text("view more stats and analytics")
-                                        .font(.custom("Poppins-Medium", size: 14))
-                                        .foregroundColor(.primary)
+                                        .font(.custom("Poppins-Medium", size: 16))
+                                        .foregroundColor(.darkGreen)
                                     Image(systemName: "chevron.right")
                                         .font(.caption)
                                         .foregroundColor(.primary)
@@ -93,18 +89,17 @@ struct HomeView: View {
                     
                     // BOTTOM: Quick Access to Insights
                     VStack(alignment: .leading, spacing: 16) {
-                        Text("3. rewear or donate")
-                            .font(.custom("Poppins-SemiBold", size: 20))
-                            .foregroundColor(.primary)
+                        Text("rewear or donate")
+                            .font(.custom("Poppins-SemiBold", size: 18))
+                            .foregroundColor(.darkGreen)
                             .frame(maxWidth: .infinity, alignment: .leading)
                         
                         // Haven't worn - leads to donate
                             TrackingHighlightCard(
-                                type: .bad,
                                 title: "time to donate",
                                 message: "your red dress hasn't been worn in 45 days",
-                                actionText: "donate now",
                                 itemImage: "img_005",
+                                iconName: "arrow.3.trianglepath",
                                 action: { selectedTab = 4 } // Navigate to Donate tab
                             )
                     }
@@ -129,46 +124,18 @@ struct HomeView: View {
             }
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
-                HStack(spacing: 16) {
-                    // Points Display
-                    Button(action: {
-                        showingRewardsModal = true
-                    }) {
-                        HStack(spacing: 8) {
-                            Image(systemName: "star.fill")
-                                .font(.subheadline)
-                                .foregroundColor(.yellow)
-                            
-                            Text("\(pointsManager.totalPoints)")
-                                .font(.custom("Poppins-SemiBold", size: 16))
-                                .foregroundColor(.primary)
-                        }
-                        .padding(.horizontal, 12)
-                        .padding(.vertical, 6)
-                        .background(Color.white)
-                        .cornerRadius(16)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 16)
-                                .stroke(Color.border, lineWidth: 1)
-                        )
-                    }
-                    
-                    // Profile Button
-                    Button(action: {
-                        showingProfileModal = true
-                    }) {
-                        Image(systemName: "person.circle.fill")
-                            .font(.title3)
-                            .foregroundColor(.primary)
-                    }
+                // Profile Button
+                Button(action: {
+                    showingProfileModal = true
+                }) {
+                    Image(systemName: "person.fill")
+                        .font(.title3)
+                        .foregroundColor(.gray)
                 }
             }
         }
         .sheet(isPresented: $showingProfileModal) {
             ProfileModal()
-        }
-        .sheet(isPresented: $showingRewardsModal) {
-            RewardsModal(pointsManager: pointsManager, isPresented: $showingRewardsModal)
         }
         }
     }
@@ -378,67 +345,63 @@ struct NewsItemCard: View {
 // MARK: - Tracking Highlight Card
 
 struct TrackingHighlightCard: View {
-    let type: NewsItemType
     let title: String
     let message: String
-    let actionText: String
     let itemImage: String
+    let iconName: String
     let action: () -> Void
     @State private var loadedImage: UIImage?
     
     var body: some View {
-        VStack(spacing: 12) {
-            // Image and text content
-            HStack(spacing: 12) {
-                // Square image on left
-                Rectangle()
-                    .fill(Color(.systemGray6))
-                    .frame(width: 80, height: 80)
-                    .cornerRadius(8)
-                    .overlay(
-                        Group {
-                            if let image = loadedImage {
-                                Image(uiImage: image)
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                            } else {
-                                Image(systemName: "tshirt")
-                                    .font(.system(size: 24))
-                                    .foregroundColor(.gray)
-                            }
+        HStack(spacing: 16) {
+            // Square image on left
+            Rectangle()
+                .fill(Color(.systemGray6))
+                .frame(width: 80, height: 80)
+                .cornerRadius(8)
+                .overlay(
+                    Group {
+                        if let image = loadedImage {
+                            Image(uiImage: image)
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                        } else {
+                            Image(systemName: "tshirt")
+                                .font(.system(size: 24))
+                                .foregroundColor(.gray)
                         }
-                    )
-                    .clipped()
+                    }
+                )
+                .clipped()
+            
+            // Text content
+            VStack(alignment: .leading, spacing: 4) {
+                // Main announcement - matching app style
+                Text(title)
+                    .font(.custom("Poppins-SemiBold", size: 16))
+                    .foregroundColor(.primary)
+                    .lineLimit(2)
+                    .multilineTextAlignment(.leading)
                 
-                // Text content
-                VStack(alignment: .leading, spacing: 4) {
-                    // Main announcement - matching app style
-                    Text(title)
-                        .font(.custom("Poppins-SemiBold", size: 16))
-                        .foregroundColor(.primary)
-                        .lineLimit(2)
-                        .multilineTextAlignment(.leading)
-                    
-                    // Subtitle
-                    Text(message)
-                        .font(.custom("Poppins-Regular", size: 14))
-                        .foregroundColor(.secondary)
-                        .lineLimit(2)
-                        .multilineTextAlignment(.leading)
-                }
-                
-                Spacer()
+                // Subtitle - flexible height to fit content
+                Text(message)
+                    .font(.custom("Poppins-Regular", size: 14))
+                    .foregroundColor(.secondary)
+                    .lineLimit(nil)
+                    .multilineTextAlignment(.leading)
+                    .fixedSize(horizontal: false, vertical: true)
             }
             
-            // Action button at bottom - full width
+            Spacer()
+            
+            // Green rounded icon button
             Button(action: action) {
-                Text(actionText)
-                    .font(.custom("Poppins-SemiBold", size: 16))
+                Image(systemName: iconName)
+                    .font(.title2)
                     .foregroundColor(.white)
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 12)
-                    .background(buttonColor)
-                    .cornerRadius(50)
+                    .frame(width: 50, height: 50)
+                    .background(Color(red: 0.373, green: 0.424, blue: 0.216)) // #5F6C37
+                    .clipShape(Circle())
             }
         }
         .padding(16)
@@ -456,16 +419,6 @@ struct TrackingHighlightCard: View {
         }
     }
     
-    private var buttonColor: Color {
-        switch type {
-        case .good:
-            return Color(red: 0.737, green: 0.424, blue: 0.145) // #BC6C25
-        case .bad:
-            return Color(red: 0.737, green: 0.424, blue: 0.145) // #BC6C25
-        case .audit:
-            return Color(red: 0.737, green: 0.424, blue: 0.145) // #BC6C25
-        }
-    }
 }
 
 struct ProfileModal: View {
@@ -477,9 +430,9 @@ struct ProfileModal: View {
                 VStack(spacing: 24) {
                     // Profile Header
                     VStack(spacing: 16) {
-                        Image(systemName: "person.circle.fill")
+                        Image(systemName: "person.fill")
                             .font(.system(size: 80))
-                            .foregroundColor(.primary)
+                            .foregroundColor(.gray)
                         
                         Text("krystal")
                             .font(.custom("Poppins-Bold", size: 28))
@@ -509,6 +462,58 @@ struct ProfileModal: View {
                             HomeStatCard(title: "worn this week", value: "4", icon: "calendar")
                             HomeStatCard(title: "items to donate", value: "3", icon: "heart.fill")
                             HomeStatCard(title: "sustainability score", value: "85%", icon: "leaf.fill")
+                        }
+                    }
+                    .padding(.horizontal)
+                    
+                    // Points and Rewards Section
+                    VStack(spacing: 16) {
+                        Text("points & rewards")
+                            .font(.custom("Poppins-Bold", size: 22))
+                            .fontWeight(.bold)
+                            .foregroundColor(.textPrimary)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                        
+                        HStack(spacing: 16) {
+                            // Points Display
+                            VStack(spacing: 8) {
+                                HStack(spacing: 8) {
+                                    Image(systemName: "star.fill")
+                                        .font(.title2)
+                                        .foregroundColor(.yellow)
+                                    
+                                    Text("1,250")
+                                        .font(.custom("Poppins-Bold", size: 24))
+                                        .foregroundColor(.textPrimary)
+                                }
+                                
+                                Text("total points")
+                                    .font(.custom("Poppins-Regular", size: 14))
+                                    .foregroundColor(.textSecondary)
+                            }
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(Color(.systemGray6))
+                            .cornerRadius(12)
+                            
+                            // Rewards Button
+                            Button(action: {
+                                // Navigate to donate page for rewards
+                            }) {
+                                VStack(spacing: 8) {
+                                    Image(systemName: "gift.fill")
+                                        .font(.title2)
+                                        .foregroundColor(.white)
+                                    
+                                    Text("redeem")
+                                        .font(.custom("Poppins-SemiBold", size: 16))
+                                        .foregroundColor(.white)
+                                }
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                                .background(Color(red: 0.373, green: 0.424, blue: 0.216))
+                                .cornerRadius(12)
+                            }
                         }
                     }
                     .padding(.horizontal)

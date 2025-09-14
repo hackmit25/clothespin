@@ -35,7 +35,7 @@ struct AddItemView: View {
                                     .clipped()
                                 
                                 // Remove button overlay
-                                Button(action: { selectedImage = nil }) {
+                                Button(action: { self.selectedImage = nil }) {
                                     Image(systemName: "xmark.circle.fill")
                                         .font(.title2)
                                         .foregroundColor(.white)
@@ -210,14 +210,6 @@ struct AddItemView: View {
                 Button("cancel", role: .cancel) { }
             } message: {
                 Text("camera is not available in the simulator. would you like to select a photo from your library instead?")
-            }
-            .alert("item added successfully!", isPresented: $showingSuccessAlert) {
-                Button("view in closet") {
-                    selectedTab = 1 // Navigate to Closet tab
-                }
-                Button("add another", role: .cancel) { }
-            } message: {
-                Text("your \(selectedCategory.lowercased()) has been added to your closet.")
             }
             .alert("item added successfully!", isPresented: $showingSuccessAlert) {
                 Button("view in closet") {
